@@ -1,0 +1,34 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Constants\**" />
+    <Compile Remove="Enums\**" />
+    <Compile Remove="Events\**" />
+    <Compile Remove="ValueObjects\**" />
+    <EmbeddedResource Remove="Constants\**" />
+    <EmbeddedResource Remove="Enums\**" />
+    <EmbeddedResource Remove="Events\**" />
+    <EmbeddedResource Remove="ValueObjects\**" />
+    <None Remove="Constants\**" />
+    <None Remove="Enums\**" />
+    <None Remove="Events\**" />
+    <None Remove="ValueObjects\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MediatR" Version="12.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="8.0.1" />
+    <PackageReference Include="NewId" Version="4.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Academy.Shared\Academy.Shared.csproj" />
+  </ItemGroup>
+
+</Project>

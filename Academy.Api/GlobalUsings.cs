@@ -1,0 +1,15 @@
+﻿global using Academy.API;
+global using Academy.Application.Auditing;
+global using Academy.Infrastructure;
+global using Academy.Infrastructure.Auth.Permissions;
+global using Academy.Infrastructure.OpenApi;
+global using Academy.Shared.Authorization;
+//global using Kendo.Mvc.UI;
+global using ManagedCode.Communication;
+global using MediatR;
+global using Microsoft.AspNetCore.Authorization;
+global using Microsoft.AspNetCore.Mvc;
+global using NSwag.Annotations;
+global using System.Security.Claims;
+global using Westwind.Globalization;
+global using DefaultIdType = global::System.Guid;

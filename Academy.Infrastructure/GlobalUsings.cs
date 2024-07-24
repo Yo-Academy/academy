@@ -1,0 +1,15 @@
+﻿global using Academy.Application.Common.Caching;
+global using Academy.Application.Common.Exceptions;
+global using Academy.Application.Common.Interfaces;
+global using Academy.Application.Common.Persistence;
+global using Academy.Domain.Entities;
+global using Academy.Domain.Identity;
+global using Academy.Infrastructure.Logging.Serilog;
+global using Asp.Versioning;
+global using ManagedCode.Communication;
+global using Mapster;
+global using Microsoft.AspNetCore.Identity;
+global using Microsoft.EntityFrameworkCore;
+global using Microsoft.Extensions.DependencyInjection;
+global using Westwind.Globalization;
+global using DefaultIdType = global::System.Guid;

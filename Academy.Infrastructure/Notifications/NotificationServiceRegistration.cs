@@ -1,0 +1,52 @@
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.Configuration;
+using Serilog;
+
+namespace Academy.Infrastructure.Notifications
+{
+    internal static class NotificationServiceRegistration
+    {
+        internal static IServiceCollection AddNotifications(this IServiceCollection services, IConfiguration config)
+        {
+            ILogger logger = Log.ForContext(typeof(NotificationServiceRegistration));
+            var signalRSettings = config.GetSection(nameof(SignalRSettings)).Get<SignalRSettings>();
+
+            if (!signalRSettings.UseBackplane)
+            {
+                services.AddSignalR();
+            }
+            else
+            {
+                var backplaneSettings = config.GetSection("SignalRSettings:Backplane").Get<SignalRSettings.Backplane>();
+                if (backplaneSettings is null) throw new InvalidOperationException("Backplane enabled, but no backplane settings in config.");
+                switch (backplaneSettings.Provider)
+                {
+                    case "redis":
+                        if (backplaneSettings.StringConnection is null) throw new InvalidOperationException("Redis backplane provider: No connectionString configured.");
+                        services.AddSignalR().AddStackExchangeRedis(backplaneSettings.StringConnection, options =>
+                        {
+                            options.Configuration.AbortOnConnectFail = false;
+                        });
+                        break;
+
+                    default:
+                        throw new InvalidOperationException($"SignalR backplane Provider {backplaneSettings.Provider} is not supported.");
+                }
+
+                logger.Information($"SignalR Backplane Current Provider: {backplaneSettings.Provider}.");
+            }
+            return services;
+        }
+
+        internal static IEndpointRouteBuilder MapNotifications(this IEndpointRouteBuilder endpoints)
+        {
+            endpoints.MapHub<NotificationHub>("/notifications", options =>
+            {
+                options.CloseOnAuthenticationExpiration = true;
+            });
+            return endpoints;
+        }
+    }
+}

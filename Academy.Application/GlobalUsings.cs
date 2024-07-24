@@ -1,0 +1,15 @@
+﻿//global using Ardalis.GuardClauses;
+global using Academy.Application.Common;
+global using Academy.Application.Common.Interfaces;
+global using Academy.Application.Common.Persistence;
+global using Academy.Application.Common.Validation;
+global using Academy.Domain.Common.Contracts;
+global using Academy.Shared.Notifications;
+global using FluentValidation;
+//global using Kendo.Mvc.UI;
+//global using Kendo.Mvc.Extensions;
+global using ManagedCode.Communication;
+global using MediatR;
+global using Westwind.Globalization;
+global using DefaultIdType = global::System.Guid;
+//global using Academy.Application.Common.KendoBaseRequest;
