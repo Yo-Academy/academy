@@ -1,0 +1,29 @@
+{
+  "LocalizationSettings": {
+    "EnableLocalization": true,
+    "ResourcesPath": "Localization",
+    "SupportedCultures": [
+      "en-US",
+      "en",
+      "fr",
+      "fr-FR",
+      "de",
+      "de-DE"
+    ],
+    "DefaultRequestCulture": "en-US",
+    "DbResourceConfiguration": {
+      "ResourceAccessMode": "DbResourceManager",
+      "ConnectionString": "Server=192.168.0.245;Database=AICoreArchitecture;User Id=postgres;Password=cPnWjzAbdm6St9m5Go8FjQ6;Include Error Detail=true;Port=5432;",
+      "DataProvider": "postgresql",
+      "ResourceTableName": "Localizations",
+      "StronglyTypedGlobalResource": "~/Localization/Resources.cs",
+      "ResourceBaseNamespace": "AppResources",
+      "ResxExportProjectType": "Project",
+      "ResxBaseFolder": "~/Localization/",
+      "AddMissingResources": true,
+      "LocalizationFormWebPath": "~/LocalizationAdmin/",
+      "BingClientId": "12345-4b99-47ed-be7e-caf733526020",
+      "GoogleApiKey": "XXXfaSyDcvmGhGN7FlynP9QUZOLF8_4K8iF9ChWo"
+    }
+  }
+}

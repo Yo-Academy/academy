@@ -1,0 +1,14 @@
+{
+  "SwaggerSettings": {
+    "Enable": true,
+    "Title": "Academy",
+    "Version": "1.0.0",
+    "Description": "API",
+    "ContactName": "Sameer Chhatbar",
+    "ContactEmail": "sameer@yosports.in",
+    "ContactUrl": "",
+    "License": true,
+    "LicenseName": "",
+    "LicenseUrl": ""
+  }
+}

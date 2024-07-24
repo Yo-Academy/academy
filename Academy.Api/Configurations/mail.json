@@ -1,0 +1,26 @@
+{
+  "MailSettings": {
+    "MailProvider": "Smtp", //Available options: Smtp, SES, SendGrid
+    "SmtpConfig": {
+      "DisplayName": "",
+      "From": "",
+      "Host": "",
+      "Password": "",
+      "Port": 0,
+      "UserName": ""
+    },
+    "AmazonSesConfig": {
+      "DisplayName": "",
+      "From": "",
+      "Host": "",
+      "Password": "",
+      "UserName": "",
+      "RegionEndpoint": "" //for example: us-east-1
+    },
+    "SendGridConfig": {
+      "ApiKey": "",
+      "DisplayName": "",
+      "From": ""
+    }
+  }
+}

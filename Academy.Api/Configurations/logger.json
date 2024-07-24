@@ -1,0 +1,12 @@
+{
+  "LoggerSettings": {
+    "AppName": "AICore",
+    "WriteToConsole": true,
+    "ElasticSearchUrl": "http://localhost:9200",
+    "WriteToFile": false,
+    "StructuredConsoleLogging": false,
+    "MinimumLogLevel": "Information",
+    "IsRequestTracingEnabled": false,
+    "IsEnableHttpsLogging": true
+  }
+}

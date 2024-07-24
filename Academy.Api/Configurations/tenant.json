@@ -1,0 +1,8 @@
+{
+  "DefaultTenantSettings": {
+    "Password": "123Pa$$word!",
+    "Id": "root",
+    "Name": "Root",
+    "EmailAddress": "admin@root.com"
+  }
+}

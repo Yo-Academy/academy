@@ -1,0 +1,14 @@
+{
+  "StorageConfig": {
+    "FileProvider": "FileStorage", //Available options: FileStorage, AWS, Azure
+    "AWS": {
+      "PublicKey": "{YOUR_AWS_PUBLIC_KEY}",
+      "SecretKey": "{YOUR_AWS_SECRET_KEY}",
+      "Bucket": "{YOUR_AWS_BUCKET_NAME}"
+    }
+    //"Azure": {
+    //  "Container": "{YOUR_AZURE_CONTAINER_NAME}",
+    //  "ConnectionString": "{YOUR_AZURE_CONNECTIONSTRING}"
+    //}
+  }
+}

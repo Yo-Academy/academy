@@ -151,8 +151,5 @@ $RECYCLE.BIN/
 *.vspx
 *.sap
 
-#Telerik's JustMock configuration files
-*.json
-
 # Service Fabric Local Cluster
 sfctl.log

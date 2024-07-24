@@ -1,0 +1,10 @@
+{
+  "LoggerSettings": {
+    "AppName": "Academy",
+    "WriteToConsole": false,
+    "WriteToFile": false,
+    "StructuredConsoleLogging": true,
+    "MinimumLogLevel": "Error",
+    "IsRequestTracingEnabled": false
+  }
+}
