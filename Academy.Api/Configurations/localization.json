@@ -13,7 +13,7 @@
     "DefaultRequestCulture": "en-US",
     "DbResourceConfiguration": {
       "ResourceAccessMode": "DbResourceManager",
-      "ConnectionString": "Server=192.168.0.245;Database=AICoreArchitecture;User Id=postgres;Password=cPnWjzAbdm6St9m5Go8FjQ6;Include Error Detail=true;Port=5432;",
+      "ConnectionString": "Server=3.110.161.35;Database=academy;User Id=admin;Password=DyEhSCq39gKMxK9tGUSBMZa;Include Error Detail=true;Port=5432;",
       "DataProvider": "postgresql",
       "ResourceTableName": "Localizations",
       "StronglyTypedGlobalResource": "~/Localization/Resources.cs",

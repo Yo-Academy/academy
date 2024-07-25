@@ -54,9 +54,9 @@ namespace Academy.Infrastructure
                 .AddMailService(config)
                 .AddStorage(config)
                 .AddMultitenancy()
+                .AddNotifications(config)
                 .AddOpenApiDocumentation(config)
                 .AddPersistence()
-                .AddNotifications(config)
                 //.AddRequestTracingMiddleware(config, environment)
                 .AddRouting(options => options.LowercaseUrls = true)
                 .AddConfiguration(config)
@@ -121,7 +121,7 @@ namespace Academy.Infrastructure
 
         public static IEndpointRouteBuilder MapEndpoints(this IEndpointRouteBuilder builder)
         {
-            builder.MapControllers().RequireAuthorization();
+            //builder.MapControllers().RequireAuthorization();
             //builder.MapHealthCheck();
             builder.MapNotifications();
             return builder;

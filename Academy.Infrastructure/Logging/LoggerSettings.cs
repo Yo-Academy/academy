@@ -2,7 +2,7 @@ namespace Academy.Infrastructure.Logging
 {
     public class LoggerSettings
     {
-        public string AppName { get; set; } = "AI Core";
+        public string AppName { get; set; } = "Academy";
         public string ElasticSearchUrl { get; set; } = string.Empty;
         public bool WriteToConsole { get; set; } = false;
         public bool WriteToFile { get; set; } = false;
