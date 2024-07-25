@@ -2,21 +2,24 @@
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
+# Copy the csproj and restore as distinct layers
+COPY Academy.Api/*.csproj ./Academy.Api/
+RUN dotnet restore ./Academy.Api/Academy.Api.csproj
+
+# Copy the rest of the application code
 COPY . .
 
-# restore package dependencies for the solution
-RUN dotnet restore "/src/Academy.Api/Academy.Api.csproj"
+WORKDIR /src/Academy.Api
 
-WORKDIR /src/AcademyAPI
-
-# publish dotnet project
+# Publish the project to the /app directory
 RUN dotnet publish -c Release -o /app
 
-FROM mcr.microsoft.com/dotnet/sdk:8.0 as runtime
-
+# Use the official .NET runtime image for running the app
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
 WORKDIR /app
 
-copy --from=build-env /app .
+# Copy the published output from the build stage
+COPY --from=build /app .
 
 EXPOSE 80
 
