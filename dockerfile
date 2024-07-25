@@ -12,7 +12,7 @@ WORKDIR /src/AcademyAPI
 # publish dotnet project
 RUN dotnet publish -c Release -o /app
 
-FROM mcr.microsoft.com/dotnet/aspnet:6.0 as runtime
+FROM mcr.microsoft.com/dotnet/sdk:8.0 as runtime
 
 WORKDIR /app
 
