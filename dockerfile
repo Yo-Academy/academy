@@ -2,12 +2,11 @@
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
-# Copy the csproj and restore as distinct layers
-COPY Academy.Api/*.csproj ./Academy.Api/
-RUN dotnet restore ./Academy.Api/Academy.Api.csproj
-
 # Copy the rest of the application code
 COPY . .
+
+# Restore package dependencies for the solution
+RUN dotnet restore "Academy.sln"
 
 WORKDIR /src/Academy.Api
 
