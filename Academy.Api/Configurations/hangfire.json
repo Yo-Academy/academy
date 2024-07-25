@@ -23,7 +23,7 @@
     "Storage": {
       "StorageProvider": "postgresql",
       //"StorageProvider": "mssql",
-      "ConnectionString": "Server=192.168.0.245;Database=AICoreArchitecture;User Id=postgres;Password=cPnWjzAbdm6St9m5Go8FjQ6;Include Error Detail=true;Port=5432;",
+      "ConnectionString": "Server=3.110.161.35:5432;Database=academy;User Id=admin;Password=DyEhSCq39gKMxK9tGUSBMZa;Include Error Detail=true;Port=5432;",
       //"ConnectionString": "Server=192.168.0.245;Database=AICoreArchitecture;User Id=postgres;Password=cPnWjzAbdm6St9m5Go8FjQ6;Include Error Detail=true;Port=5432;",
       //"ConnectionString": "Server=192.168.0.61;Database=AICoreArchitecture;User Id=sa;Password=pjadmin@123$;Encrypt=True;TrustServerCertificate=True;",
       "Options": {

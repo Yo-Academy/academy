@@ -11,27 +11,27 @@ namespace Academy.API.Configurations
             const string configurationsDirectory = "Configurations";
             var env = builder.Environment;
 
-            builder.Configuration.AddJsonFile($"{configurationsDirectory}/secretmanager.json", optional: false, reloadOnChange: true);
+            //builder.Configuration.AddJsonFile($"{configurationsDirectory}/secretmanager.json", optional: false, reloadOnChange: true);
 
-            bool retrieveSecrets = builder.Configuration.GetValue<bool>("secretmanager:retrieveSecrets");
+            //bool retrieveSecrets = builder.Configuration.GetValue<bool>("secretmanager:retrieveSecrets");
 
-            if (retrieveSecrets)
-            {
-                builder.Configuration.AddSecretsManager(
-                 region: RegionEndpoint.APSouth1,
-                 configurator: options =>
-                 {
-                     options.SecretFilter = entry => entry.Name.StartsWith($"dev-rsa-public-key");
-                 });
-            }
-            else
-            {
-                builder.Configuration.AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true);
-            }
+            //if (retrieveSecrets)
+            //{
+            //    builder.Configuration.AddSecretsManager(
+            //     region: RegionEndpoint.APSouth1,
+            //     configurator: options =>
+            //     {
+            //         options.SecretFilter = entry => entry.Name.StartsWith($"dev-rsa-public-key");
+            //     });
+            //}
+            //else
+            //{
+            //    builder.Configuration.AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true);
+            //}
 
             builder.Configuration
-                    //.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                    //.AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true)
+                    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                    .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true)
                     .AddJsonFile($"{configurationsDirectory}/auditing.json", optional: false, reloadOnChange: true)
                     .AddJsonFile($"{configurationsDirectory}/auditing.{env.EnvironmentName}.json", optional: true, reloadOnChange: true)
                     .AddJsonFile($"{configurationsDirectory}/logger.json", optional: false, reloadOnChange: true)

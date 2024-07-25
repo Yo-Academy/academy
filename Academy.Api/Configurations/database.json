@@ -1,7 +1,7 @@
 {
   "DatabaseSettings": {
     "DBProvider": "postgresql",
-    "ConnectionString": "Server=localhost:5432;Database=academy;User Id=postgres;Password=admin;Include Error Detail=true;Port=5432;"
+    "ConnectionString": "Server=3.110.161.35:5432;Database=academy;User Id=admin;Password=DyEhSCq39gKMxK9tGUSBMZa;Include Error Detail=true;Port=5432;"
     //"DBProvider": "mysql",
     //"ConnectionString": "server=192.168.0.245;database=AICoreArchitecture;userid=root;port=3310;password=DyEhSCq39gKMxK9tGUSBMZa;",
     //need to set "InvariantGlobalization"= false in Digitalnomads.API csproj file for mssql database

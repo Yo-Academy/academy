@@ -32,7 +32,7 @@ namespace Academy.Domain.Identity
         public DateTime? DeletedOn { get; set; }
         public DefaultIdType? DeletedBy { get; set; }
         public bool IsDeleted { get; set; }
-        public string? OTP { get; set; }
-        public string CountryCode { get; set; }
+        //public string? OTP { get; set; }
+        //public string CountryCode { get; set; }
     }
 }
