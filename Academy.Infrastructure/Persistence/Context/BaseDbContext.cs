@@ -37,7 +37,7 @@ namespace Academy.Infrastructure.Persistence.Context
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // QueryFilters need to be applied before base.OnModelCreating
-            modelBuilder.AppendGlobalQueryFilter<ISoftDelete>(s => s.DeletedOn == null);
+            modelBuilder.AppendGlobalQueryFilter<ISoftDelete>(s => !s.IsDeleted);
 
             base.OnModelCreating(modelBuilder);
 
@@ -184,6 +184,16 @@ namespace Academy.Infrastructure.Persistence.Context
                             entry.State = EntityState.Modified;
                         }
 
+                        break;
+                }
+            }
+
+            foreach (var valueObject in ChangeTracker.Entries<ValueObject>().ToList())
+            {
+                switch (valueObject.State)
+                {
+                    case EntityState.Deleted:
+                        valueObject.State = EntityState.Unchanged;
                         break;
                 }
             }

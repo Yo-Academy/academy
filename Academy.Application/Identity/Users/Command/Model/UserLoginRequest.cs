@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Academy.Application.Identity.Users.Query.Model
+namespace Academy.Application.Identity.Users.Command.Model
 {
     public class UserLoginRequest
     {

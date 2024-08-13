@@ -129,7 +129,7 @@ namespace Academy.Migrators.PostgreSQL.Migrations.Application
 
                     b.HasKey("Id");
 
-                    b.ToTable("CommonLookups");
+                    b.ToTable("CommonLookups", (string)null);
 
                     b.HasAnnotation("Finbuckle:MultiTenant", true);
                 });
@@ -176,7 +176,7 @@ namespace Academy.Migrators.PostgreSQL.Migrations.Application
 
                     b.HasIndex("CommonLookupId");
 
-                    b.ToTable("CommonLookupTranslations");
+                    b.ToTable("CommonLookupTranslations", (string)null);
                 });
 
             modelBuilder.Entity("Academy.Domain.Entities.EmailHistory", b =>
@@ -243,7 +243,7 @@ namespace Academy.Migrators.PostgreSQL.Migrations.Application
 
                     b.HasKey("Id");
 
-                    b.ToTable("EmailHistory");
+                    b.ToTable("EmailHistory", (string)null);
 
                     b.HasAnnotation("Finbuckle:MultiTenant", true);
                 });
@@ -307,7 +307,7 @@ namespace Academy.Migrators.PostgreSQL.Migrations.Application
 
                     b.HasKey("Id");
 
-                    b.ToTable("EmailTemplates");
+                    b.ToTable("EmailTemplates", (string)null);
 
                     b.HasAnnotation("Finbuckle:MultiTenant", true);
                 });
@@ -368,7 +368,7 @@ namespace Academy.Migrators.PostgreSQL.Migrations.Application
 
                     b.HasKey("Id");
 
-                    b.ToTable("Settings");
+                    b.ToTable("Settings", (string)null);
 
                     b.HasAnnotation("Finbuckle:MultiTenant", true);
                 });

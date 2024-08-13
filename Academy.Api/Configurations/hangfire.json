@@ -5,7 +5,7 @@
     "Dashboard": {
       "AppPath": "/",
       "StatsPollingInterval": 2000,
-      "DashboardTitle": "AICore Jobs"
+      "DashboardTitle": "Academy Jobs"
     },
     "Server": {
       "HeartbeatInterval": "00:00:30",

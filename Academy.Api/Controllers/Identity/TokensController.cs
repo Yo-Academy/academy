@@ -8,6 +8,15 @@ namespace Academy.API.Controllers.Identity
 
         public TokensController(ITokenService tokenService) => _tokenService = tokenService;
 
+        [HttpPost("login-token")]
+        [AllowAnonymous]
+        [TenantIdHeader]
+        [OpenApiOperation("Request an access token using credentials.", "")]
+        public Task<TokenResponse> GetLoginTokenAsync(LoginRequest request, CancellationToken cancellationToken)
+        {
+            return _tokenService.GetLoginTokenAsync(request, GetIpAddress()!, cancellationToken);
+        }
+
         [HttpPost]
         [AllowAnonymous]
         [TenantIdHeader]

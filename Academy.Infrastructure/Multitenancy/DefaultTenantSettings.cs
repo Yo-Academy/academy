@@ -15,5 +15,6 @@ namespace Academy.Infrastructure.Multitenancy
         public string Name { get; set; }
 
         public string EmailAddress { get; set; }
+        public string Phonenumber { get; set; }
     }
 }

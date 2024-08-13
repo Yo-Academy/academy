@@ -70,9 +70,9 @@ namespace Academy.Infrastructure.Persistence.Initialization
                     defaultTenantSettings.Name,
                     string.Empty,
                     defaultTenantSettings.EmailAddress,
-                    _config);
+                    _config, defaultTenantSettings.Phonenumber);
 
-                rootTenant.SetValidity(DateTime.UtcNow.AddYears(1));
+                rootTenant.SetValidity(DateTime.UtcNow.AddYears(10));
 
                 _tenantDbContext.TenantInfo.Add(rootTenant);
 

@@ -1,8 +1,9 @@
 {
   "DefaultTenantSettings": {
-    "Password": "123Pa$$word!",
+    "Password": "1234",
     "Id": "root",
     "Name": "Root",
-    "EmailAddress": "admin@root.com"
+    "EmailAddress": "admin@root.com",
+    "PhoneNumber": "9409005156"
   }
 }

@@ -1,4 +1,5 @@
 using Academy.Application.Common.Exceptions;
+using Academy.Application.Identity.Tokens;
 using Academy.Application.Identity.Users;
 using Academy.Application.Identity.Users.Password;
 using FluentValidation;
@@ -239,5 +240,14 @@ namespace Academy.API.Controllers.Identity
             return NoContent();
         }
         #endregion
+
+        [HttpGet("check-user/{phonenumber}")]
+        [AllowAnonymous]
+        [TenantIdHeader]
+        [OpenApiOperation("Request an access token using credentials.", "")]
+        public async Task<ActionResult> CheckUserAsync(string phonenumber, CancellationToken cancellationToken)
+        {
+            return Ok(Result.Succeed(await _userService.ExistsWithPhoneNumberAsync(phonenumber)));
+        }
     }
 }
