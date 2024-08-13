@@ -12,5 +12,22 @@ namespace Academy.Domain.Entities
         public string Image { get; set; }
         public bool IsActive { get; set; }
         public List<AcademySportsMapping> AcademySportsMapping { get; set; }
+        public Sports() { }
+
+        public Sports(DefaultIdType id, string name, string image, bool isActive)
+        {
+            Id = id;
+            Name = name;
+            Image = image;
+            IsActive = isActive;
+        }
+
+        public Sports Update(string name, string image, bool isActive)
+        {
+            Name = name;
+            Image = image;
+            IsActive = isActive;
+            return this;
+        }
     }
 }

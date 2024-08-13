@@ -18,7 +18,8 @@ namespace Academy.Domain.Entities
         public string Pincode { get; set; }
         public string QRCode { get; set; }
         public string Logo { get; set; }
-        public Academies(DefaultIdType id, string name,string shortname, string academyId, string gst,
+        public Academies() { }
+        public Academies(DefaultIdType id, string name, string shortname, string academyId, string gst,
             string address, string city, string pincode)
         {
             Id = id;
