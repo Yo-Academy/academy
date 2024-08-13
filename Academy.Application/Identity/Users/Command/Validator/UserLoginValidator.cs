@@ -1,11 +1,11 @@
-﻿using Academy.Application.Identity.Users.Query.Model;
+﻿using Academy.Application.Identity.Users.Command.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Academy.Application.Identity.Users.Query.Validator
+namespace Academy.Application.Identity.Users.Command.Validator
 {
     public class UserLoginValidator : CustomValidator<UserLoginRequest>
     {

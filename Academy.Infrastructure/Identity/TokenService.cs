@@ -76,6 +76,41 @@ namespace Academy.Infrastructure.Identity
             return await GenerateTokensAndUpdateUser(user, ipAddress);
         }
 
+        public async Task<TokenResponse> GetLoginTokenAsync(LoginRequest request, string ipAddress, CancellationToken cancellationToken)
+        {
+            if (string.IsNullOrWhiteSpace(_currentTenant?.Id)
+                || await _userManager.Users.FirstOrDefaultAsync(x => x.PhoneNumber == request.Phonenumber) is not { } user
+                || !await _userManager.CheckPasswordAsync(user, request.Password))
+            {
+                throw new UnauthorizedException(DbRes.T("AuthenticationFailedMsg"));
+            }
+            await _userService.InvalidatePermissionCacheAsync(user.Id, cancellationToken);
+            if (!user.IsActive)
+            {
+                throw new UnauthorizedException(DbRes.T("UserNotActiveMsg"));
+            }
+
+            if (_securitySettings.RequireConfirmedAccount && !user.EmailConfirmed)
+            {
+                throw new UnauthorizedException(DbRes.T("EmailNotConfirmedMsg"));
+            }
+
+            if (_currentTenant.Id != _config.GetSection(nameof(DefaultTenantSettings)).Get<DefaultTenantSettings>()!.Id)
+            {
+                if (!_currentTenant.IsActive)
+                {
+                    throw new UnauthorizedException(DbRes.T("TenantNotActiveMsg"));
+                }
+
+                if (DateTime.UtcNow > _currentTenant.ValidUpto)
+                {
+                    throw new UnauthorizedException(DbRes.T("TenantValidityExpiredMsg"));
+                }
+            }
+
+            return await GenerateTokensAndUpdateUser(user, ipAddress);
+        }
+
         public async Task<TokenResponse> RefreshTokenAsync(RefreshTokenRequest request, string ipAddress)
         {
             var userPrincipal = GetPrincipalFromExpiredToken(request.Token);

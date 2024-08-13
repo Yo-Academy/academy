@@ -7,6 +7,7 @@ namespace Academy.Application.Multitenancy
         public string? ConnectionString { get; set; }
         public string AdminEmail { get; set; } = default!;
         public string? Issuer { get; set; }
+        public string Phonenumber { get; set; } = default!; 
     }
 
     public class CreateTenantRequestHandler : IRequestHandler<CreateTenantRequest, Result<TenantDto>>

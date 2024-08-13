@@ -101,6 +101,7 @@ namespace Academy.Infrastructure.Persistence.Initialization
                     LastName = Roles.Admin,
                     Email = _currentTenant.AdminEmail,
                     UserName = adminUserName,
+                    PhoneNumber = _currentTenant.Phonenumber,
                     EmailConfirmed = true,
                     PhoneNumberConfirmed = true,
                     NormalizedEmail = _currentTenant.AdminEmail?.ToUpperInvariant(),

@@ -62,6 +62,10 @@ namespace Academy.Migrators.PostgreSQL.Migrations.Tenant
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("Phonenumber")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<DateTime>("ValidUpto")
                         .HasColumnType("timestamp without time zone");
 

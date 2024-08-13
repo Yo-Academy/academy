@@ -1,6 +1,6 @@
 {
   "LoggerSettings": {
-    "AppName": "AICore",
+    "AppName": "Academy",
     "WriteToConsole": true,
     "ElasticSearchUrl": "http://localhost:9200",
     "WriteToFile": false,

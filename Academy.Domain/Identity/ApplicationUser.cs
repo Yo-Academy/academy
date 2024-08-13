@@ -13,7 +13,7 @@ namespace Academy.Domain.Identity
         {
             UserName = userName;
         }
-
+        public override string? Email { get => base.Email ; set => base.Email = value; }
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
         public string? ImageUrl { get; set; }
