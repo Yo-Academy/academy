@@ -17,4 +17,9 @@ namespace Academy.Infrastructure.Multitenancy
         public string EmailAddress { get; set; }
         public string Phonenumber { get; set; }
     }
+
+    public class MyacademyTenantSettings : DefaultTenantSettings
+    {
+
+    }
 }

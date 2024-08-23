@@ -79,7 +79,7 @@ namespace Academy.Infrastructure.Identity
         public async Task<TokenResponse> GetLoginTokenAsync(LoginRequest request, string ipAddress, CancellationToken cancellationToken)
         {
             if (string.IsNullOrWhiteSpace(_currentTenant?.Id)
-                || await _userManager.Users.FirstOrDefaultAsync(x => x.PhoneNumber == request.Phonenumber) is not { } user
+                || await _userManager.Users.FirstOrDefaultAsync(x => x.PhoneNumber == request.PhoneNumber) is not { } user
                 || !await _userManager.CheckPasswordAsync(user, request.Password))
             {
                 throw new UnauthorizedException(DbRes.T("AuthenticationFailedMsg"));

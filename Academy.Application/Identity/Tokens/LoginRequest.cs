@@ -1,15 +1,17 @@
 namespace Academy.Application.Identity.Tokens
 {
-    public record LoginRequest(string Phonenumber, string Password);
+    public record LoginRequest(string PhoneNumber, string Password);
 
     public class LoginRequestValidator : CustomValidator<LoginRequest>
     {
         public LoginRequestValidator()
         {
-            RuleFor(p => p.Phonenumber).Cascade(CascadeMode.Stop)
+            RuleFor(p => p.PhoneNumber).Cascade(CascadeMode.Stop)
                 .NotEmpty()
-                .EmailAddress()
-                    .WithMessage(DbRes.T("InvalidEmailAddressMsg"));
+                .MinimumLength(10)
+                .MaximumLength(10)
+                .Matches(@"^[0-9]*$")
+                .WithMessage(DbRes.T("InvalidPhoneNumberMsg"));
 
             RuleFor(p => p.Password).Cascade(CascadeMode.Stop)
                 .NotEmpty();
