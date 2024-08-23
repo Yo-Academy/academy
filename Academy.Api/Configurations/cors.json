@@ -1,5 +1,5 @@
 {
   "CorsSettings": {
-    "Angular": "http://localhost:7057"
+    "Angular": "http://localhost:7057;http://localhost:4200"
   }
 }

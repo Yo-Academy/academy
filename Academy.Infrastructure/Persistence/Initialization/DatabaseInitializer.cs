@@ -62,21 +62,30 @@ namespace Academy.Infrastructure.Persistence.Initialization
 
         private async Task SeedRootTenantAsync(CancellationToken cancellationToken)
         {
-            if (await _tenantDbContext.TenantInfo.FindAsync(new object?[] { _config.GetSection(nameof(DefaultTenantSettings)).Get<DefaultTenantSettings>()!.Id }, cancellationToken: cancellationToken) is null)
+            var tenantSettingsList = new List<DefaultTenantSettings>
             {
-                var defaultTenantSettings = _config.GetSection(nameof(DefaultTenantSettings)).Get<DefaultTenantSettings>()!;
-                var rootTenant = new TenantInfo(
-                    defaultTenantSettings.Id,
-                    defaultTenantSettings.Name,
-                    string.Empty,
-                    defaultTenantSettings.EmailAddress,
-                    _config, defaultTenantSettings.Phonenumber);
+                _config.GetSection(nameof(DefaultTenantSettings)).Get<DefaultTenantSettings>()!,
+                _config.GetSection(nameof(MyacademyTenantSettings)).Get<DefaultTenantSettings>()!
+            };
 
-                rootTenant.SetValidity(DateTime.UtcNow.AddYears(10));
+            foreach (var tenantSettings in tenantSettingsList)
+            {
+                if (await _tenantDbContext.TenantInfo.FindAsync(new object?[] { tenantSettings.Id }, cancellationToken: cancellationToken) is null)
+                {
+                    var tenant = new TenantInfo(
+                        tenantSettings.Id,
+                        tenantSettings.Name,
+                        string.Empty,
+                        tenantSettings.EmailAddress,
+                        _config,
+                        tenantSettings.Phonenumber
+                    );
 
-                _tenantDbContext.TenantInfo.Add(rootTenant);
+                    tenant.SetValidity(DateTime.UtcNow.AddYears(10));
 
-                await _tenantDbContext.SaveChangesAsync(cancellationToken);
+                    _tenantDbContext.TenantInfo.Add(tenant);
+                    await _tenantDbContext.SaveChangesAsync();
+                }
             }
         }
     }
