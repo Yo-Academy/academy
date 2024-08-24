@@ -1,14 +1,10 @@
 ﻿using Academy.Application.Academies.Dto;
 using Academy.Application.Academies.Query.Models;
 using Academy.Application.Academies.Specifications;
-using Academy.Application.CommonLookups.Dto;
-using Academy.Application.CommonLookups.Specifications;
 using Academy.Application.Persistence.Repository;
 using Academy.Shared.Pagination;
 using Academy.Shared.Pagination.Models;
-using Azure.Core;
 using Mapster;
-using System.Threading;
 using Entity = Academy.Domain.Entities;
 
 namespace Academy.Application.Academies.Query.Handlers
@@ -25,6 +21,7 @@ namespace Academy.Application.Academies.Query.Handlers
         {
             var spec = new GetAcademiesListSpec(request);
             var data = await _repository.PaginatedListAsync(spec, request.PageNumber, request.PageSize, cancellationToken);
+
 
             if (data.Data != null && data.Data.Count > 0)
             {
