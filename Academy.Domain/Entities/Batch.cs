@@ -1,19 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
-
-namespace Academy.Domain.Entities
+﻿namespace Academy.Domain.Entities
 {
     public class Batch : AuditableEntity, IAggregateRoot
     {
         public DefaultIdType SportsId { get; set; }
         public string BatchName { get; set; }
-        public string Coaching { get; set; }
+        public DefaultIdType CoachingId { get; set; }
         public TimeOnly StartTime { get; set; }
         public TimeOnly EndTime { get; set; }
         public string Days { get; set; }
@@ -21,27 +12,29 @@ namespace Academy.Domain.Entities
         [ForeignKey("SportsId")]
         public virtual Sports Sports { get; set; }
 
+        [ForeignKey("CoachingId")]
+        public virtual Coaching Coaching { get; set; }
         public Batch()
         {
             
         }
 
-        public Batch(DefaultIdType id, DefaultIdType sportsId, string batchName, string coaching, TimeOnly startTime, TimeOnly endTime, string days)
+        public Batch(DefaultIdType id, DefaultIdType sportsId, string batchName, DefaultIdType coachingId, TimeOnly startTime, TimeOnly endTime, string days)
         {
             Id = id;
             SportsId = sportsId;
             BatchName = batchName;
-            Coaching = coaching;
+            CoachingId = coachingId;
             StartTime = startTime;
             EndTime = endTime;
             Days = days;
         }
 
-        public Batch Update(DefaultIdType sportsId, string batchName, string coaching, TimeOnly startTime, TimeOnly endTime, string days)
+        public Batch Update(DefaultIdType sportsId, string batchName, DefaultIdType coachingId, TimeOnly startTime, TimeOnly endTime, string days)
         {
             SportsId = sportsId;
             BatchName = batchName;
-            Coaching = coaching;
+            CoachingId = coachingId;
             StartTime = startTime;
             EndTime = endTime;
             Days = days;

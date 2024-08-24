@@ -19,7 +19,7 @@ namespace Academy.Application.Batch.Command.Validators
              .NotEmpty()
              .MaximumLength(50);
 
-            RuleFor(p => p.Coaching)
+            RuleFor(p => p.CoachingId)
              .NotEmpty();
         }
     }

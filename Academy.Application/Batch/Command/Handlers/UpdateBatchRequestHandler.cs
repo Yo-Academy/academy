@@ -22,7 +22,7 @@ namespace Academy.Application.Batch.Command.Handlers
             if (BatchToUpdate == null)
                 return Result.Fail(new NotFoundException("Batch Not Found"));
 
-            BatchToUpdate.Update(request.SportsId, request.BatchName, request.Coaching, request.StartTime, request.EndTime, request.Days);
+            BatchToUpdate.Update(request.SportsId, request.BatchName, request.CoachingId, request.StartTime, request.EndTime, request.Days);
 
             await _repository.UpdateAsync(BatchToUpdate, cancellationToken);
             return Result.Succeed(BatchToUpdate.Adapt<BatchDto>());

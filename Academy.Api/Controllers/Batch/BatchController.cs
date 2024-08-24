@@ -1,9 +1,6 @@
 ﻿using Academy.API.Controllers;
-using Academy.Application.Academies.Command.Models;
-using Academy.Application.Academies.Query.Models;
 using Academy.Application.Batch.Command.Models;
 using Academy.Application.Batch.Query.Models;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Academy.Api.Controllers.Batch
 {
@@ -25,7 +22,7 @@ namespace Academy.Api.Controllers.Batch
         [HttpPost]
         [OpenApiOperation("Creates an batch.", "")]
         public async Task<ActionResult> CreateAsync(CreateBatchRequest createBatchCommand)
-        {
+            {
             return Ok(await _mediator.Send(createBatchCommand));
         }
 
