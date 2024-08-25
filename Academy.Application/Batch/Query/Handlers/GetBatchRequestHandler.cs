@@ -27,8 +27,8 @@ namespace Academy.Application.Batch.Query.Handlers
 
             if (data.Data != null && data.Data.Count > 0)
             {
-                var academiesList = data.Data.Adapt<List<BatchDto>>();
-                data.Data = academiesList;
+                var batchList = data.Data.Adapt<List<BatchDto>>();
+                data.Data = batchList;
             }
             return Result.Succeed(data);
         }
