@@ -19,7 +19,7 @@ namespace Academy.Application.Academies.Command.Handlers
             var AcademiesToUpdate = await _repository.GetByIdAsync(request.Id, cancellationToken);
 
             if (AcademiesToUpdate == null)
-                return Result.Fail(new NotFoundException("Academies Not Found"));
+                return Result.Fail(new NotFoundException(DbRes.T("ErrorMessageAcademyNotFound")));
 
             AcademiesToUpdate.Update(request.Name,request.ShortName, request.GST, request.Address, request.City, request.Pincode);
 

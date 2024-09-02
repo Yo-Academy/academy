@@ -14,7 +14,7 @@ namespace Academy.Infrastructure.Persistence.Configuration
         {
             base.Configure(builder);
 
-            builder.IsMultiTenant();
+            //builder.IsMultiTenant();
         }
     }
 }

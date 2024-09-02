@@ -5,13 +5,16 @@ using Academy.Infrastructure.Auth.Jwt;
 using Academy.Infrastructure.Multitenancy;
 using Academy.Shared.Authorization;
 using Academy.Shared.Multitenancy;
+using Finbuckle.MultiTenant.Strategies;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using StackExchange.Redis;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using static Academy.Shared.Constants;
 
 namespace Academy.Infrastructure.Identity
 {
@@ -131,7 +134,14 @@ namespace Academy.Infrastructure.Identity
 
         private async Task<TokenResponse> GenerateTokensAndUpdateUser(ApplicationUser user, string ipAddress)
         {
-            string token = GenerateJwt(user, ipAddress);
+            var roles = await _userManager.GetRolesAsync(user);
+            string role = Roles.SAdmin;
+            if (roles.Count > 0)
+            {
+                role = roles.Count > 1 ? (roles.Contains(UserRole.User) ? UserRole.User : roles.First()) : roles.First();
+            }
+
+            string token = GenerateJwt(user, role, ipAddress);
 
             user.RefreshToken = GenerateRefreshToken();
             user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(_jwtSettings.RefreshTokenExpirationInDays);
@@ -141,10 +151,10 @@ namespace Academy.Infrastructure.Identity
             return new TokenResponse(token, user.RefreshToken, user.RefreshTokenExpiryTime);
         }
 
-        private string GenerateJwt(ApplicationUser user, string ipAddress) =>
-            GenerateEncryptedToken(GetSigningCredentials(), GetClaims(user, ipAddress));
+        private string GenerateJwt(ApplicationUser user, string role, string ipAddress) =>
+            GenerateEncryptedToken(GetSigningCredentials(), GetClaims(user, role, ipAddress));
 
-        private IEnumerable<Claim> GetClaims(ApplicationUser user, string ipAddress) =>
+        private IEnumerable<Claim> GetClaims(ApplicationUser user, string role, string ipAddress) =>
             new List<Claim>
             {
                 new(ClaimTypes.NameIdentifier, user.Id.ToString()),
@@ -155,7 +165,8 @@ namespace Academy.Infrastructure.Identity
                 new(Claims.IpAddress, ipAddress),
                 new(Claims.Tenant, _currentTenant!.Id),
                 new(Claims.ImageUrl, user.ImageUrl ?? string.Empty),
-                new(ClaimTypes.MobilePhone, user.PhoneNumber ?? string.Empty)
+                new(ClaimTypes.MobilePhone, user.PhoneNumber ?? string.Empty),
+                new(ClaimTypes.Role,role)
             };
 
         private static string GenerateRefreshToken()

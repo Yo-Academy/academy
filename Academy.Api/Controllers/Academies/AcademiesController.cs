@@ -1,5 +1,6 @@
 ﻿using Academy.API.Controllers;
 using Academy.Application.Academies.Command.Models;
+using Academy.Application.Academies.Dto;
 using Academy.Application.Academies.Query.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -24,9 +25,10 @@ namespace Academy.Api.Controllers.Academies
 
         [HttpPost]
         [OpenApiOperation("Creates an academy.", "")]
-        public async Task<ActionResult> CreateAsync(CreateAcademiesRequest createAcademyCommand)
+        public async Task<ActionResult> CreateAsync([FromForm] CreateAcademiesRequest createAcademyCommand)
         {
-            return Ok(await _mediator.Send(createAcademyCommand));
+            Result<AcademmyDetailsDto> createResult = await _mediator.Send(createAcademyCommand);
+            return CreatedAtRoute(new { id = createResult.Value?.Academy.Id }, createResult);
         }
 
         [HttpDelete("{id}")]

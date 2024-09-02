@@ -18,7 +18,7 @@ namespace Academy.Application.Academies.Command.Handlers
             var AcademiesToDelete = await _repository.GetByIdAsync(request.Id, cancellationToken);
 
             if (AcademiesToDelete == null)
-                return Result.Fail(new NotFoundException("Common Lookup Not Found"));
+                return Result.Fail(new NotFoundException(DbRes.T("ErrorMessageAcademyNotFound")));
 
             await _repository.DeleteAsync(AcademiesToDelete, cancellationToken);
             return Result.Succeed(AcademiesToDelete.Adapt<AcademiesDto>());

@@ -2,6 +2,7 @@
 using Academy.Application.Sport.Query.Models;
 using Academy.Domain.Entities;
 using Academy.Shared.Pagination;
+using Academy.Shared.Pagination.Entity;
 using Ardalis.Specification;
 
 namespace Academy.Application.Sport.Specifications

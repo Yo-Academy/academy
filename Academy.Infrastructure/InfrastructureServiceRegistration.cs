@@ -169,7 +169,7 @@ namespace Academy.Infrastructure
             if (string.IsNullOrEmpty(options.Bucket))
             {
                 throw new Exception($"{nameof(options.Bucket)} cannot be empty");
-            }
+            } 
         }
 
         private static void CheckAzureConfiguration(IAzureStorageOptions options)

@@ -26,6 +26,8 @@ namespace Academy.Infrastructure.Persistence.Context
 
         public DbSet<CommonLookupTranslation> CommonLookupTranslations => Set<CommonLookupTranslation>();
 
+        public DbSet<Permissions> Permissions => Set<Permissions>();
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<AuditLog>().ToTable(nameof(AuditLogs), t => t.ExcludeFromMigrations());

@@ -1,10 +1,11 @@
 {
   "StorageConfig": {
-    "FileProvider": "FileStorage", //Available options: FileStorage, AWS, Azure
+    "FileProvider": "AWS", //Available options: FileStorage, AWS, Azure
     "AWS": {
-      "PublicKey": "{YOUR_AWS_PUBLIC_KEY}",
-      "SecretKey": "{YOUR_AWS_SECRET_KEY}",
-      "Bucket": "{YOUR_AWS_BUCKET_NAME}"
+      "PublicKey": "AKIA5V3WEWSYVHOALFW7",
+      "SecretKey": "rg8zOZ0GXXmCsiIxBxcdHIyBzHJGBbJ01U886eeD",
+      "Bucket": "academy-dev-assets",
+      "RegionEndpoint": "ap-south-1"
     }
     //"Azure": {
     //  "Container": "{YOUR_AZURE_CONTAINER_NAME}",

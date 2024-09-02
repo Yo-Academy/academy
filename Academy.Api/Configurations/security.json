@@ -4,7 +4,7 @@
     "RequireConfirmedAccount": true,
     "JwtSettings": {
       "key": "71a75345ed2f19f76458f2d3347dcd5be214ccf306b9f19208f891e29f40a6cb",
-      "tokenExpirationInMinutes": 60,
+      "tokenExpirationInMinutes": 1440,
       "refreshTokenExpirationInDays": 7
     },
     "AzureAd": {

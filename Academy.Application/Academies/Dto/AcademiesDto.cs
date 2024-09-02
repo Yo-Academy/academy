@@ -1,4 +1,6 @@
-﻿namespace Academy.Application.Academies.Dto
+﻿using Academy.Application.Multitenancy;
+
+namespace Academy.Application.Academies.Dto
 {
     public class AcademiesDto
     {
@@ -9,5 +11,12 @@
         public string City { get; set; }
         public string Pincode { get; set; }
         public string QRCode { get; set; }
+        public DefaultIdType Id { get; set; }
+    }
+
+    public class AcademmyDetailsDto
+    {
+        public AcademiesDto Academy { get; set; }
+        public TenantDto Tenant { get; set; }
     }
 }

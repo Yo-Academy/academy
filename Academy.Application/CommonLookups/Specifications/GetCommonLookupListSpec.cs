@@ -2,6 +2,7 @@
 using Academy.Application.CommonLookups.Query.Models;
 using Academy.Domain.Entities;
 using Academy.Shared.Pagination;
+using Academy.Shared.Pagination.Entity;
 using Academy.Shared.Pagination.Models;
 using Ardalis.Specification;
 

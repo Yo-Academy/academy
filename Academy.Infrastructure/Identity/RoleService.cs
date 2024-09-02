@@ -195,5 +195,22 @@ namespace Academy.Infrastructure.Identity
 
             return string.Format(DbRes.T("RoleDeletedWithParamsMsg"), role.Name);
         }
+
+        public async Task<Guid> GetRoleByRoleCodeAsync(string roleName)
+        {
+            if (string.IsNullOrWhiteSpace(roleName))
+            {
+                return Guid.Empty;
+            }
+
+            var role = await _db.Roles.FirstOrDefaultAsync(x => !String.IsNullOrWhiteSpace(x.Name) && x.Name.ToLower().Equals(roleName.ToLower()));
+
+            return role?.Id ?? Guid.Empty;
+        }
+
+        public async Task<List<string>> GetPermissionsByRoleId(DefaultIdType roleId)
+        {
+            return await _db.RoleClaims.Where(x => x.ClaimType == Claims.Permission && x.RoleId == roleId).Select(x => x.ClaimValue).ToListAsync();
+        }
     }
 }
