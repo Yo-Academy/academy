@@ -20,7 +20,8 @@ namespace Academy.Application.Batch.Command.Handlers
             var BatchToDelete = await _repository.GetByIdAsync(request.Id, cancellationToken);
 
             if (BatchToDelete == null)
-                return Result.Fail(new NotFoundException("Common Lookup Not Found"));
+                return Result.Fail(new NotFoundException(DbRes.T("BatchNotFound")));
+            
 
             await _repository.DeleteAsync(BatchToDelete, cancellationToken);
             return Result.Succeed(BatchToDelete.Adapt<BatchDto>());

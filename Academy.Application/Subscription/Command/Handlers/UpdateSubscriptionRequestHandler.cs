@@ -20,7 +20,7 @@ namespace Academy.Application.Subscription.Command.Handlers
             var SubscriptionToUpdate = await _repository.GetByIdAsync(request.Id, cancellationToken);
 
             if (SubscriptionToUpdate == null)
-                return Result.Fail(new NotFoundException("Subscription Not Found"));
+                return Result.Fail(new NotFoundException(DbRes.T("SubscriptionNotFound")));
 
             SubscriptionToUpdate.Update(request.SportsId, request.BatchId, request.CoachingId, request.PlanTypeId, request.Fee);
 

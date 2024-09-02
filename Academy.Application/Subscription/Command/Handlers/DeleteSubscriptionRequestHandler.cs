@@ -20,7 +20,7 @@ namespace Academy.Application.Subscription.Command.Handlers
             var SubscriptionToDelete = await _repository.GetByIdAsync(request.Id, cancellationToken);
 
             if (SubscriptionToDelete == null)
-                return Result.Fail(new NotFoundException("Common Lookup Not Found"));
+                return Result.Fail(new NotFoundException(DbRes.T("SubscriptionNotFound")));
 
             await _repository.DeleteAsync(SubscriptionToDelete, cancellationToken);
             return Result.Succeed(SubscriptionToDelete.Adapt<SubscriptionDto>());

@@ -20,7 +20,7 @@ namespace Academy.Application.Batch.Command.Handlers
             var BatchToUpdate = await _repository.GetByIdAsync(request.Id, cancellationToken);
 
             if (BatchToUpdate == null)
-                return Result.Fail(new NotFoundException("Batch Not Found"));
+                return Result.Fail(new NotFoundException(DbRes.T("BatchNotFound")));
 
             BatchToUpdate.Update(request.SportsId, request.BatchName, request.CoachingId, request.StartTime, request.EndTime, request.Days);
 
