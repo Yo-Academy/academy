@@ -2,6 +2,7 @@
 using Academy.Application.Academies.Command.Models;
 using Academy.Application.Academies.Dto;
 using Academy.Application.Academies.Query.Models;
+using Academy.Application.Identity.Users;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -29,6 +30,15 @@ namespace Academy.Api.Controllers.Academies
         {
             Result<AcademmyDetailsDto> createResult = await _mediator.Send(createAcademyCommand);
             return CreatedAtRoute(new { id = createResult.Value?.Academy.Id }, createResult);
+        }
+
+        [HttpPost("academy-user")]
+        [OpenApiOperation("Creates an academy user.", "")]
+        public async Task<ActionResult> CreateAcademyUserByRoleAsync(CreateAcademyUserRequest createAcademyUserCommand)
+        {
+            createAcademyUserCommand.Origin = Request.Scheme;
+            Result<UserDetailsDto> createResult = await _mediator.Send(createAcademyUserCommand);
+            return CreatedAtRoute(new { id = createResult.Value?.Id }, createResult);
         }
 
         [HttpDelete("{id}")]

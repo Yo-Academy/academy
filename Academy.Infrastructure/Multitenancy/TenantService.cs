@@ -50,7 +50,7 @@ namespace Academy.Infrastructure.Multitenancy
         {
             if (request.ConnectionString?.Trim() == _dbSettings.ConnectionString.Trim()) request.ConnectionString = string.Empty;
 
-            var tenant = new TenantInfo(request.Id, request.Name, request.ConnectionString, request.AdminEmail, _config, request.Phonenumber, request.Issuer);
+            var tenant = new TenantInfo(request.Id, request.Name, request.ConnectionString, request.AdminEmail, _config, request.Issuer);
             await _tenantStore.TryAddAsync(tenant);
 
             // TODO: run this in a hangfire job? will then have to send mail when it's ready or not

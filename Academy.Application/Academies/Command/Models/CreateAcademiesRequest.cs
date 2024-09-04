@@ -13,8 +13,8 @@ namespace Academy.Application.Academies.Command.Models
         public string Address { get; set; }
         public string City { get; set; }
         public string Pincode { get; set; }
-        public IFormFile? LogoImage { get; set; } = default!;
-        public IFormFile? QRImage { get; set; } = default!;
+        public IFormFile? Logo { get; set; } = default!;
+        public IFormFile? QR { get; set; } = default!;
 
         public List<DefaultIdType> sports { get; set; }
     }

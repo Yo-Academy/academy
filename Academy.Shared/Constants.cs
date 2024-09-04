@@ -8,6 +8,7 @@ namespace Academy.Shared
 {
     public class Constants
     {
+        public static string DefaultPassword = "123456";
         public class ValidationRegex
         {
             public const string Name = "^[a-zA-Z ]*$";
@@ -26,5 +27,7 @@ namespace Academy.Shared
             public const string Admin = "Admin";
             public const string SAdmin = "SAdmin";
         }
+
+        public static string DefaultDomain = "@yosports.in";
     }
 }

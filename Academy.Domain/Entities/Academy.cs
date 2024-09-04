@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Options;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
@@ -21,19 +22,20 @@ namespace Academy.Domain.Entities
         public string? Subdomain { get; set; }
         public bool IsActive { get; set; }
         public Academies() { }
-        public Academies(DefaultIdType id, string name, string shortname, string academyId, string gst,
-            string address, string city, string pincode, string logo, string qrcode)
+        public Academies(DefaultIdType id, string name, string shortname, string? gst,
+            string address, string city, string pincode, string logo, string qrcode, string academyId, int cnt, int padcount = 3)
         {
             Id = id;
             Name = name;
             ShortName = shortname;
-            AcademyId = academyId;
+            AcademyId = NameFor(cnt, academyId, padcount);
             GST = gst;
             Address = address;
             City = city;
             Pincode = pincode;
             Logo = logo;
             QRCode = qrcode;
+            IsActive = true;
         }
 
         public Academies Update(string name, string shortname, string gst,
@@ -48,5 +50,7 @@ namespace Academy.Domain.Entities
             Subdomain = subdomain;
             return this;
         }
+
+        private static string NameFor(int cnt, string shorname, int pad) => $"{shorname}{cnt.ToString().PadLeft(pad, '0')}";
     }
 }
