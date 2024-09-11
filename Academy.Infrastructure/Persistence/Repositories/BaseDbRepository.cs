@@ -19,4 +19,20 @@ namespace Academy.Infrastructure.Persistence.Repository
                 : ApplySpecification(specification, false)
                     .ProjectToType<TResult>();
     }
+
+
+    public abstract class BaseDbRepositoryWA<T> : RepositoryBase<T>, IReadOnlyRepository<T>, IWriteRepository<T>
+        where T : class
+    {
+        public BaseDbRepositoryWA(DbContext dbContext) : base(dbContext)
+        {
+
+        }
+
+        protected override IQueryable<TResult> ApplySpecification<TResult>(ISpecification<T, TResult> specification) =>
+            specification.Selector is not null
+                ? base.ApplySpecification(specification)
+                : ApplySpecification(specification, false)
+                    .ProjectToType<TResult>();
+    }
 }

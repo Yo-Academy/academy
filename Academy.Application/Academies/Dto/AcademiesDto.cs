@@ -12,9 +12,11 @@ namespace Academy.Application.Academies.Dto
         public string Pincode { get; set; }
         public string QRCode { get; set; }
         public DefaultIdType Id { get; set; }
+        public string Logo { get; set; }
+        public string QR { get; set; }
     }
 
-    public class AcademmyDetailsDto
+    public class AcademyDetailsDto
     {
         public AcademiesDto Academy { get; set; }
         public TenantDto Tenant { get; set; }

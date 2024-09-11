@@ -3,6 +3,7 @@ using System;
 using Academy.Infrastructure.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Academy.Migrators.PostgreSQL.Migrations.Application
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240908094921_Adding_foreign_key_AuditableEntity")]
+    partial class Adding_foreign_key_AuditableEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -168,8 +171,6 @@ namespace Academy.Migrators.PostgreSQL.Migrations.Application
                         .HasColumnType("character varying(64)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AcademyId");
 
                     b.HasIndex("CreatedBy");
 
@@ -1318,12 +1319,6 @@ namespace Academy.Migrators.PostgreSQL.Migrations.Application
 
             modelBuilder.Entity("Academy.Domain.Entities.AcademySportsMapping", b =>
                 {
-                    b.HasOne("Academy.Domain.Entities.Academies", null)
-                        .WithMany("AcademySportsMappings")
-                        .HasForeignKey("AcademyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Academy.Domain.Identity.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("CreatedBy")
@@ -1516,21 +1511,17 @@ namespace Academy.Migrators.PostgreSQL.Migrations.Application
 
             modelBuilder.Entity("Academy.Domain.Identity.ApplicationUserRole", b =>
                 {
-                    b.HasOne("Academy.Domain.Identity.ApplicationRole", "Role")
-                        .WithMany("UserRoles")
+                    b.HasOne("Academy.Domain.Identity.ApplicationRole", null)
+                        .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Academy.Domain.Identity.ApplicationUser", "User")
-                        .WithMany("ApplicationUserRole")
+                    b.HasOne("Academy.Domain.Identity.ApplicationUser", null)
+                        .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Role");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Academy.Domain.Identity.ApplicationUserToken", b =>
@@ -1542,11 +1533,6 @@ namespace Academy.Migrators.PostgreSQL.Migrations.Application
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Academy.Domain.Entities.Academies", b =>
-                {
-                    b.Navigation("AcademySportsMappings");
-                });
-
             modelBuilder.Entity("Academy.Domain.Entities.CommonLookup", b =>
                 {
                     b.Navigation("CommonLookupTranslations");
@@ -1555,16 +1541,6 @@ namespace Academy.Migrators.PostgreSQL.Migrations.Application
             modelBuilder.Entity("Academy.Domain.Entities.Sports", b =>
                 {
                     b.Navigation("AcademySportsMapping");
-                });
-
-            modelBuilder.Entity("Academy.Domain.Identity.ApplicationRole", b =>
-                {
-                    b.Navigation("UserRoles");
-                });
-
-            modelBuilder.Entity("Academy.Domain.Identity.ApplicationUser", b =>
-                {
-                    b.Navigation("ApplicationUserRole");
                 });
 #pragma warning restore 612, 618
         }

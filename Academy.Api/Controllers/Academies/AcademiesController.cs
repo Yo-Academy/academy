@@ -3,8 +3,7 @@ using Academy.Application.Academies.Command.Models;
 using Academy.Application.Academies.Dto;
 using Academy.Application.Academies.Query.Models;
 using Academy.Application.Identity.Users;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+using Academy.Infrastructure.Multitenancy;
 
 namespace Academy.Api.Controllers.Academies
 {
@@ -12,9 +11,12 @@ namespace Academy.Api.Controllers.Academies
     public class AcademiesController : VersionedApiController
     {
         private readonly IMediator _mediator;
-        public AcademiesController(IMediator mediator)
+        private readonly ITenantResolverService _tenantResolverService;
+
+        public AcademiesController(IMediator mediator, ITenantResolverService tenantResolverService)
         {
             _mediator = mediator;
+            _tenantResolverService = tenantResolverService;
         }
 
         [HttpGet]
@@ -28,16 +30,23 @@ namespace Academy.Api.Controllers.Academies
         [OpenApiOperation("Creates an academy.", "")]
         public async Task<ActionResult> CreateAsync([FromForm] CreateAcademiesRequest createAcademyCommand)
         {
-            Result<AcademmyDetailsDto> createResult = await _mediator.Send(createAcademyCommand);
+            Result<AcademyDetailsDto> createResult = await _mediator.Send(createAcademyCommand);
             return CreatedAtRoute(new { id = createResult.Value?.Academy.Id }, createResult);
         }
 
         [HttpPost("academy-user")]
+        [TenantIdHeader]
         [OpenApiOperation("Creates an academy user.", "")]
         public async Task<ActionResult> CreateAcademyUserByRoleAsync(CreateAcademyUserRequest createAcademyUserCommand)
         {
             createAcademyUserCommand.Origin = Request.Scheme;
+
+            //await _tenantResolverService.SwitchTenantAsync(Request.HttpContext, createAcademyUserCommand.TenantId);
+
             Result<UserDetailsDto> createResult = await _mediator.Send(createAcademyUserCommand);
+
+            //await _tenantResolverService.RevertToPreviousTenantAsync(Request.HttpContext);
+
             return CreatedAtRoute(new { id = createResult.Value?.Id }, createResult);
         }
 
@@ -57,7 +66,7 @@ namespace Academy.Api.Controllers.Academies
 
         [HttpPut("{id}")]
         [OpenApiOperation("Updates academy details.", "")]
-        public async Task<ActionResult> UpdateAsync(Guid id, UpdateAcademiesRequest updateAcademyCommand)
+        public async Task<ActionResult> UpdateAsync(Guid id, [FromForm] UpdateAcademiesRequest updateAcademyCommand)
         {
             updateAcademyCommand.Id = id;
             return Ok(await _mediator.Send(updateAcademyCommand));

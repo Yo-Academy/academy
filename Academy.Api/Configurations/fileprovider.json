@@ -4,7 +4,7 @@
     "AWS": {
       "PublicKey": "AKIA5V3WEWSYVHOALFW7",
       "SecretKey": "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",
-      "Bucket": "academy-dev-assets",
+      "Bucket": "academy-dev-resources",
       "RegionEndpoint": "ap-south-1"
     }
     //"Azure": {

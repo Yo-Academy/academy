@@ -28,3 +28,20 @@ public interface IRepositoryWithEvents<T> : IRepositoryBase<T>
     where T : class, IAggregateRoot
 {
 }
+
+
+/// <summary>
+/// The regular read/write repository for an aggregate root.
+/// </summary>
+public interface IWriteRepository<T> : IRepositoryBase<T>
+    where T : class
+{
+}
+
+/// <summary>
+/// The read-only repository for an aggregate root.
+/// </summary>
+public interface IReadOnlyRepository<T> : IReadRepositoryBase<T>
+    where T : class
+{
+}

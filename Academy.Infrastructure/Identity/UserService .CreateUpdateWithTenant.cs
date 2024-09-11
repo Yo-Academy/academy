@@ -13,31 +13,6 @@ namespace Academy.Infrastructure.Identity
     {
         public async Task<Result<UserDetailsDto>> CreateAsyncWithTenantId(CreateAcademyUserRequest request, string origin)
         {
-            //// Switch the tenant context
-            //var tenant = await _tenantResolver.ResolveAsync(request.TenantId);
-            //if (tenant == null)
-            //{
-            //    throw new Exception("Tenant not found");
-            //}
-
-            // Save current tenant context
-            var currentTenant = _multiTenantContextAccessor.MultiTenantContext?.TenantInfo;
-
-            // Get the target tenant
-            var targetTenant = await _dbTenant.TenantInfo.FirstOrDefaultAsync(
-                t => t.Identifier == request.TenantId);
-
-            if (targetTenant == null)
-            {
-                throw new Exception("Tenant not found");
-            }
-
-            // Switch to the target tenant context
-            _multiTenantContextAccessor.MultiTenantContext = new MultiTenantContext<TenantInfo>()
-            {
-                TenantInfo = targetTenant.Adapt<TenantInfo>()
-            };
-
             var names = request.FullName.Split(' ', StringSplitOptions.RemoveEmptyEntries);
             var user = new ApplicationUser
             {
@@ -47,50 +22,42 @@ namespace Academy.Infrastructure.Identity
                 PhoneNumber = request.PhoneNumber,
                 IsActive = true,
                 TenantId = request.TenantId,
-                OTP = "1234"
+                OTP = "1234",
+                CountryCode = "91"
             };
 
-            try
+
+            var password = new PasswordHasher<ApplicationUser>();
+            string defaultPassword = Constants.DefaultPassword;
+            user.PasswordHash = password.HashPassword(user, defaultPassword);
+            var result = await _userManager.CreateAsync(user, Constants.DefaultPassword);
+            if (!result.Succeeded)
             {
-                var password = new PasswordHasher<ApplicationUser>();
-                string defaultPassword = Constants.DefaultPassword;
-                user.PasswordHash = password.HashPassword(user, defaultPassword);
-                var result = await _userManager.CreateAsync(user, Constants.DefaultPassword);
-                if (!result.Succeeded)
-                {
-                    throw new InternalServerException(DbRes.T("ValidationErrorsOccurredMsg"), result.GetErrors());
-                }
-
-                await _userManager.AddToRoleAsync(user, request.Role);
-
-                var messages = new List<string> { string.Format(DbRes.T("UserRegisteredWithParamsMsg"), user.UserName) };
-
-                if (_securitySettings.RequireConfirmedAccount && !string.IsNullOrEmpty(user.Email))
-                {
-                    //send verification email
-                    string emailVerificationUri = await GetEmailVerificationUriAsync(user, origin);
-                    RegisterUserEmailDto emailModel = new RegisterUserEmailDto()
-                    {
-                        Email = user.Email,
-                        UserName = user.UserName,
-                        Url = emailVerificationUri
-                    };
-                    var emailTemplate = await _emailTemplateRepository.GetEmailTemplateByCodeAsync("CNFEM");
-                    var body = _emailHelper.GenerateEmailTemplate(emailTemplate.Body, emailModel);
-                    MailRequest mailRequest = new MailRequest() { To = new List<string> { user.Email }, Subject = DbRes.T(emailTemplate.Subject), Body = body };
-                    await _events.PublishAsync(new MailSendEvent(mailRequest));
-                    messages.Add(string.Format(DbRes.T("VerifyAccountWithParamsMsg"), user.Email));
-                    await _events.PublishAsync(new ApplicationUserCreatedEvent(user.Id));
-                }
+                throw new InternalServerException(DbRes.T("ValidationErrorsOccurredMsg"), result.GetErrors());
             }
-            finally
+
+            await _userManager.AddToRoleAsync(user, request.Role);
+
+            var messages = new List<string> { string.Format(DbRes.T("UserRegisteredWithParamsMsg"), user.UserName) };
+
+            if (_securitySettings.RequireConfirmedAccount && !string.IsNullOrEmpty(user.Email))
             {
-                // Revert to the original tenant context
-                _multiTenantContextAccessor.MultiTenantContext = new MultiTenantContext<TenantInfo>
+                //send verification email
+                string emailVerificationUri = await GetEmailVerificationUriAsync(user, origin);
+                RegisterUserEmailDto emailModel = new RegisterUserEmailDto()
                 {
-                    TenantInfo = currentTenant ?? _currentTenant
+                    Email = user.Email,
+                    UserName = user.UserName,
+                    Url = emailVerificationUri
                 };
+                var emailTemplate = await _emailTemplateRepository.GetEmailTemplateByCodeAsync("CNFEM");
+                var body = _emailHelper.GenerateEmailTemplate(emailTemplate.Body, emailModel);
+                MailRequest mailRequest = new MailRequest() { To = new List<string> { user.Email }, Subject = DbRes.T(emailTemplate.Subject), Body = body };
+                await _events.PublishAsync(new MailSendEvent(mailRequest));
+                messages.Add(string.Format(DbRes.T("VerifyAccountWithParamsMsg"), user.Email));
+                await _events.PublishAsync(new ApplicationUserCreatedEvent(user.Id));
             }
+
             return Result.Succeed(user.Adapt<UserDetailsDto>());
         }
 

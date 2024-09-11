@@ -36,10 +36,23 @@ namespace Academy.Infrastructure.Persistence.Configuration
 
     public class ApplicationUserRoleConfig : IEntityTypeConfiguration<ApplicationUserRole>
     {
-        public void Configure(EntityTypeBuilder<ApplicationUserRole> builder) =>
+        public void Configure(EntityTypeBuilder<ApplicationUserRole> builder)
+        {
             builder
                 .ToTable("UserRoles")
                 .IsMultiTenant();
+
+            builder
+                .HasOne(ur => ur.User)
+                .WithMany(u => u.ApplicationUserRole)
+                .HasForeignKey(ur => ur.UserId);
+
+            builder
+                .HasOne(ur => ur.Role)
+                .WithMany(r => r.UserRoles)
+                .HasForeignKey(ur => ur.RoleId);
+        }
+
     }
 
     public class ApplicationUserClaimConfig : IEntityTypeConfiguration<ApplicationUserClaim>

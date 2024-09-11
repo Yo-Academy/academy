@@ -17,7 +17,7 @@ using Entities = Academy.Domain.Entities;
 
 namespace Academy.Application.Academies.Command.Handlers
 {
-    public class CreateAcademiesRequestHandler : IRequestHandler<CreateAcademiesRequest, Result<AcademmyDetailsDto>>
+    public class CreateAcademiesRequestHandler : IRequestHandler<CreateAcademiesRequest, Result<AcademyDetailsDto>>
     {
         private readonly IRepository<Entities.Academies> _repository;
         private readonly IRepository<AcademySportsMapping> _repositoryAcademyMapping;
@@ -37,7 +37,7 @@ namespace Academy.Application.Academies.Command.Handlers
             _tenantService = tenantService;
             _readRepoSetting = readRepoSetting;
         }
-        public async Task<Result<AcademmyDetailsDto>> Handle(CreateAcademiesRequest request, CancellationToken cancellationToken)
+        public async Task<Result<AcademyDetailsDto>> Handle(CreateAcademiesRequest request, CancellationToken cancellationToken)
         {
             var id = DefaultIdType.NewGuid();
             string logoName = string.Empty;
@@ -84,7 +84,7 @@ namespace Academy.Application.Academies.Command.Handlers
                 request.GST, request.Address, request.City, request.Pincode, logoName, QRName,
                 request.ShortName.GetSubdomainFromShortName(), cnt++, PadLeft);
 
-            var result = new AcademmyDetailsDto();
+            var result = new AcademyDetailsDto();
 
             //Create A new Tenant for academy
             string tanentId = request.ShortName.GetSubdomainFromShortName();
@@ -113,7 +113,7 @@ namespace Academy.Application.Academies.Command.Handlers
 
 
                 var academyList = new List<AcademySportsMapping>();
-                foreach (var item in request.sports)
+                foreach (var item in request.Sports)
                 {
                     academyList.Add(new AcademySportsMapping(Guid.NewGuid(), Academies.Id, item));
                 }

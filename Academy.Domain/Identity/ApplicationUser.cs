@@ -34,6 +34,7 @@ namespace Academy.Domain.Identity
         public bool IsDeleted { get; set; }
         public string? OTP { get; set; }
         public string CountryCode { get; set; }
-        public string? TenantId { get; set; }
+        public string TenantId { get; set; }
+        public virtual ICollection<ApplicationUserRole> ApplicationUserRole { get; set; }
     }
 }

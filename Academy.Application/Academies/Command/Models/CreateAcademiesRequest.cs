@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace Academy.Application.Academies.Command.Models
 {
-    public class CreateAcademiesRequest : IRequest<Result<AcademmyDetailsDto>>
+    public class CreateAcademiesRequest : IRequest<Result<AcademyDetailsDto>>
     {
         public string Name { get; set; }
         public string ShortName { get; set; }
@@ -15,7 +15,6 @@ namespace Academy.Application.Academies.Command.Models
         public string Pincode { get; set; }
         public IFormFile? Logo { get; set; } = default!;
         public IFormFile? QR { get; set; } = default!;
-
-        public List<DefaultIdType> sports { get; set; }
+        public List<DefaultIdType> Sports { get; set; }
     }
 }

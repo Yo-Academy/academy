@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using Academy.Shared;
+using System.Text;
 
 namespace Academy.Application.Common.Helpers;
 
@@ -55,5 +56,15 @@ public static class StringExtensions
         var abbreviation = string.Concat(words.Select(word => word[0]));
 
         return abbreviation.ToLower();
+    }
+
+    /// <summary>
+    /// Get Localization string From Resources !
+    /// </summary>
+    /// <param name="key"></param>
+    /// <returns></returns>
+    public static string GetResourcesString(string key, string res = default!)
+    {
+        return DbRes.T(key, res ?? Constants.LocalizationResource);
     }
 }

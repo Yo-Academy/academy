@@ -45,7 +45,6 @@ namespace Academy.Infrastructure.Identity
 
         public async Task<TokenResponse> GetTokenAsync(TokenRequest request, string ipAddress, CancellationToken cancellationToken)
         {
-
             if (string.IsNullOrWhiteSpace(_currentTenant?.Id)
                 || await _userManager.FindByEmailAsync(request.Email.Trim().Normalize()) is not { } user
                 || !await _userManager.CheckPasswordAsync(user, request.Password))

@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Academy.Domain.Identity;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +22,9 @@ namespace Academy.Domain.Entities
         public string? Logo { get; set; }
         public string? Subdomain { get; set; }
         public bool IsActive { get; set; }
+        [ForeignKey("AcademyId")]
+        public virtual ICollection<AcademySportsMapping> AcademySportsMappings { get; set; }
+        //public virtual ICollection<ApplicationUser> ApplicationUsers { get; set; }  
         public Academies() { }
         public Academies(DefaultIdType id, string name, string shortname, string? gst,
             string address, string city, string pincode, string logo, string qrcode, string academyId, int cnt, int padcount = 3)
@@ -39,7 +43,7 @@ namespace Academy.Domain.Entities
         }
 
         public Academies Update(string name, string shortname, string gst,
-            string address, string city, string pincode, string? subdomain = default)
+            string address, string city, string pincode, bool isActive, string? subdomain = default)
         {
             Name = name;
             ShortName = shortname;
@@ -48,6 +52,7 @@ namespace Academy.Domain.Entities
             City = city;
             Pincode = pincode;
             Subdomain = subdomain;
+            IsActive = isActive;
             return this;
         }
 
