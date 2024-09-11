@@ -24,6 +24,7 @@ using Academy.Infrastructure.Validations;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
@@ -60,6 +61,7 @@ namespace Academy.Infrastructure
                 //.AddRequestTracingMiddleware(config, environment)
                 .AddRouting(options => options.LowercaseUrls = true)
                 .AddConfiguration(config)
+                .AddIdentityEmailNullConfig(config)
                 .AddServices();
 
         }
@@ -67,6 +69,14 @@ namespace Academy.Infrastructure
         private static IServiceCollection AddConfiguration(this IServiceCollection services, IConfiguration config)
         {
             return services.AddSingleton(config);
+        }
+
+        private static IServiceCollection AddIdentityEmailNullConfig(this IServiceCollection services, IConfiguration config)
+        {
+            return services.Configure<IdentityOptions>(options =>
+            {
+                options.User.RequireUniqueEmail = false; // Disable unique email requirement
+            });
         }
 
         private static IServiceCollection AddApiVersioning(this IServiceCollection services, IConfiguration config)
@@ -111,9 +121,9 @@ namespace Academy.Infrastructure
             .UseRequestLogging()
             .UseRouting()
             .UseCorsPolicy()
+            .UseMultiTenancy()
             .UseAuthentication()
             .UseCurrentUser()
-            .UseMultiTenancy()
             .UseAuthorization()
             //.UseRequestTracingMiddleware()
             .UseHangfireDashboard(config)
@@ -169,7 +179,7 @@ namespace Academy.Infrastructure
             if (string.IsNullOrEmpty(options.Bucket))
             {
                 throw new Exception($"{nameof(options.Bucket)} cannot be empty");
-            }
+            } 
         }
 
         private static void CheckAzureConfiguration(IAzureStorageOptions options)

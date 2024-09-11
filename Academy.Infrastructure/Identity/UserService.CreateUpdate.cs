@@ -118,7 +118,7 @@ namespace Academy.Infrastructure.Identity
                 throw new InternalServerException(DbRes.T("ValidationErrorsOccurredMsg"), result.GetErrors());
             }
 
-            await _userManager.AddToRoleAsync(user, Roles.Basic);
+            await _userManager.AddToRoleAsync(user, Roles.Admin);
 
             var messages = new List<string> { string.Format(DbRes.T("UserRegisteredWithParamsMsg"), user.UserName) };
 

@@ -1,3 +1,4 @@
+using Academy.Application.Academies.Command.Models;
 using Academy.Application.Identity.Users.Password;
 using System.Security.Claims;
 
@@ -38,5 +39,6 @@ namespace Academy.Application.Identity.Users
         Task ChangePasswordAsync(ChangePasswordRequest request, DefaultIdType userId);
 
         Task<string> DeleteAsync(DefaultIdType id);
+        Task<Result<UserDetailsDto>> CreateAsyncWithTenantId(CreateAcademyUserRequest request, string origin);
     }
 }

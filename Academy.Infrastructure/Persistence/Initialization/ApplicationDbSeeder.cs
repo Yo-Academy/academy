@@ -1,10 +1,12 @@
-﻿using Academy.Infrastructure.Caching;
+﻿using Academy.Application.Persistence.Repository;
+using Academy.Domain.Entities;
 using Academy.Infrastructure.Multitenancy;
 using Academy.Infrastructure.Persistence.Context;
+using Academy.Infrastructure.Persistence.Initialization;
 using Academy.Shared.Authorization;
-using Academy.Shared.Multitenancy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using StackExchange.Redis;
 
 namespace Academy.Infrastructure.Persistence.Initialization
 {
@@ -16,9 +18,11 @@ namespace Academy.Infrastructure.Persistence.Initialization
         private readonly CustomSeederRunner _seederRunner;
         private readonly ILogger<ApplicationDbSeeder> _logger;
         private readonly IConfiguration _config;
+        private readonly IRepository<Permissions> _permissionsRepository;
 
 
-        public ApplicationDbSeeder(TenantInfo currentTenant, RoleManager<ApplicationRole> roleManager, UserManager<ApplicationUser> userManager, CustomSeederRunner seederRunner, ILogger<ApplicationDbSeeder> logger, IConfiguration config)
+        public ApplicationDbSeeder(TenantInfo currentTenant, RoleManager<ApplicationRole> roleManager, UserManager<ApplicationUser> userManager, CustomSeederRunner seederRunner, ILogger<ApplicationDbSeeder> logger, IConfiguration config,
+            IRepository<Permissions> permissionsRepository)
         {
             _currentTenant = currentTenant;
             _roleManager = roleManager;
@@ -26,10 +30,13 @@ namespace Academy.Infrastructure.Persistence.Initialization
             _seederRunner = seederRunner;
             _logger = logger;
             _config = config;
+            _permissionsRepository = permissionsRepository;
         }
 
         public async Task SeedDatabaseAsync(ApplicationDbContext dbContext, CancellationToken cancellationToken)
         {
+            // Seed default permissions if there is no permission in table
+            await SeedPermisisonsAsync();
             await SeedRolesAsync(dbContext);
             await SeedAdminUserAsync();
             await _seederRunner.RunSeedersAsync(cancellationToken);
@@ -37,6 +44,14 @@ namespace Academy.Infrastructure.Persistence.Initialization
 
         private async Task SeedRolesAsync(ApplicationDbContext dbContext)
         {
+            var permissions = await dbContext.Permissions.ToListAsync();
+            List<Permission> permissionsList = [];
+            foreach (var permission in permissions)
+            {
+                Permission per = new(permission.Description ?? "", permission.Action, permission.Resource, permission.IsBasic, permission.IsRoot);
+                permissionsList.Add(per);
+            }
+            IReadOnlyList<Permission> readOnlyPermissionsList = permissionsList.AsReadOnly();
             foreach (string roleName in Roles.DefaultRoles)
             {
                 if (await _roleManager.Roles.SingleOrDefaultAsync(r => r.Name == roleName)
@@ -49,17 +64,17 @@ namespace Academy.Infrastructure.Persistence.Initialization
                 }
 
                 // Assign permissions
-                if (roleName == Roles.Basic)
+                if (roleName == Roles.Admin)
                 {
-                    await AssignPermissionsToRoleAsync(dbContext, Permissions.Basic, role);
+                    await AssignPermissionsToRoleAsync(dbContext, readOnlyPermissionsList.Where(x => x.IsBasic).ToList(), role);
                 }
-                else if (roleName == Roles.Admin)
+                else if (roleName == Roles.SAdmin)
                 {
-                    await AssignPermissionsToRoleAsync(dbContext, Permissions.Admin, role);
+                    await AssignPermissionsToRoleAsync(dbContext, readOnlyPermissionsList, role);
 
                     if (_currentTenant.Id == _config.GetSection(nameof(DefaultTenantSettings)).Get<DefaultTenantSettings>()!.Id)
                     {
-                        await AssignPermissionsToRoleAsync(dbContext, Permissions.Root, role);
+                        await AssignPermissionsToRoleAsync(dbContext, readOnlyPermissionsList.Where(x => x.IsRoot).ToList(), role);
                     }
                 }
             }
@@ -94,14 +109,14 @@ namespace Academy.Infrastructure.Persistence.Initialization
             if (await _userManager.Users.FirstOrDefaultAsync(u => u.Email == _currentTenant.AdminEmail)
                 is not ApplicationUser adminUser)
             {
-                string adminUserName = $"{_currentTenant.Id.Trim()}.{Roles.Admin}".ToLowerInvariant();
+                string adminUserName = $"{_currentTenant.Id.Trim()}.{Roles.SAdmin}".ToLowerInvariant();
                 adminUser = new ApplicationUser()
                 {
                     FirstName = _currentTenant.Id.Trim().ToLowerInvariant(),
                     LastName = Roles.Admin,
                     Email = _currentTenant.AdminEmail,
+                    PhoneNumber = _config.GetSection(nameof(DefaultTenantSettings)).Get<DefaultTenantSettings>()!.Phonenumber,
                     UserName = adminUserName,
-                    PhoneNumber = _currentTenant.Phonenumber,
                     EmailConfirmed = true,
                     PhoneNumberConfirmed = true,
                     NormalizedEmail = _currentTenant.AdminEmail?.ToUpperInvariant(),
@@ -117,10 +132,31 @@ namespace Academy.Infrastructure.Persistence.Initialization
             }
 
             // Assign role to user
-            if (!await _userManager.IsInRoleAsync(adminUser, Roles.Admin))
+            if (!await _userManager.IsInRoleAsync(adminUser, Roles.SAdmin))
             {
                 _logger.LogInformation("Assigning Admin Role to Admin User for '{tenantId}' Tenant.", _currentTenant.Id);
-                await _userManager.AddToRoleAsync(adminUser, Roles.Admin);
+                await _userManager.AddToRoleAsync(adminUser, Roles.SAdmin);
+            }
+        }
+
+        private async Task SeedPermisisonsAsync()
+        {
+            if (!await _permissionsRepository.AnyAsync())
+            {
+                var permissions = PermissionsList.All;
+
+                var enitiyPermissions = new List<Permissions>();
+                foreach (var permission in permissions)
+                {
+                    enitiyPermissions.Add(new Permissions(
+                        Guid.NewGuid(),
+                        permission.Action, permission.Resource,
+                        permission.Description, permission.IsBasic, permission.IsRoot)
+                    );
+                }
+
+                _logger.LogInformation("Seeding Permissions for '{tenantId}' Tenant.", _currentTenant.Id);
+                await _permissionsRepository.AddRangeAsync(enitiyPermissions);
             }
         }
     }

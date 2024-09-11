@@ -1,6 +1,6 @@
 ﻿namespace Academy.Domain.Entities
 {
-    public class Setting : AuditableEntity
+    public class Setting : AuditableEntity, IAggregateRoot
     {
         public string Name { get; set; } = default!;
         public string? Description { get; set; }

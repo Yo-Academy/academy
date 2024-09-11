@@ -13,7 +13,7 @@ namespace Academy.Infrastructure.Multitenancy
         }
 
         public TenantInfo(string id, string name, string? connectionString,
-            string adminEmail, IConfiguration config, string phonenumber, string? issuer = null)
+            string adminEmail, IConfiguration config, string? issuer = null)
         {
             Id = id;
             Identifier = id;
@@ -26,7 +26,6 @@ namespace Academy.Infrastructure.Multitenancy
             // Add Default 1 Month Validity for all new tenants. Something like a DEMO period for tenants.
             ValidUpto = DateTime.UtcNow.AddMonths(1);
             _config = config;
-            Phonenumber = phonenumber;
         }
 
         /// <summary>
@@ -42,8 +41,7 @@ namespace Academy.Infrastructure.Multitenancy
         public string Name { get; set; } = default!;
         public string ConnectionString { get; set; } = default!;
 
-        public string AdminEmail { get; private set; } = default!;
-        public string Phonenumber { get; private set; } = default!;
+        public string? AdminEmail { get; private set; } = default!;
         public bool IsActive { get; private set; }
         public DateTime ValidUpto { get; private set; }
 

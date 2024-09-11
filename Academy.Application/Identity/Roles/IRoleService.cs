@@ -19,5 +19,7 @@ namespace Academy.Application.Identity.Roles
         Task<Result<RoleDto>> UpdatePermissionsAsync(UpdateRolePermissionsRequest request, CancellationToken cancellationToken);
 
         Task<string> DeleteAsync(DefaultIdType id);
+        Task<Guid> GetRoleByRoleCodeAsync(string roleName);
+        Task<List<string>> GetPermissionsByRoleId(DefaultIdType roleId);
     }
 }

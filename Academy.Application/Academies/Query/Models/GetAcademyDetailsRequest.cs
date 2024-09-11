@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Academy.Application.Academies.Query.Models
 {
-    public class GetAcademyDetailsRequest : IRequest<Result<AcademiesDto>>
+    public class GetAcademyDetailsRequest : IRequest<Result<AcademyDetailDto>>
     {
         public DefaultIdType Id { get; set; }
     }

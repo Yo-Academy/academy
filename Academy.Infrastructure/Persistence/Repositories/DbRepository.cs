@@ -13,4 +13,14 @@ namespace Academy.Infrastructure.Persistence.Repository
         }
 
     }
+
+    public class DbRepositoryWA<T> : BaseDbRepositoryWA<T> where T : class
+    {
+        protected ApplicationDbContext _dbContext { get; set; }
+        public DbRepositoryWA(ApplicationDbContext dbContext) : base(dbContext)
+        {
+            _dbContext = dbContext;
+        }
+
+    }
 }

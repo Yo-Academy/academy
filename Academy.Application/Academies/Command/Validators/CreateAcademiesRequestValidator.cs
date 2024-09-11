@@ -34,13 +34,14 @@ namespace Academy.Application.Academies.Command.Validators
               .MaximumLength(255);
 
             RuleFor(p => p.City)
-              .NotEmpty()
-              .Matches(Constants.ValidationRegex.Pincode)
-              .WithMessage(DbRes.T("EnterValidPincode"));
+              .NotEmpty();
+            //.Matches(Constants.ValidationRegex.Pincode)
+            //.WithMessage((_) => DbRes.T("EnterValidPincode"));
 
             RuleFor(p => p.GST)
-                .NotEmpty()
-                .MaximumLength(15);
+                .Length(15, 15)
+                .WithMessage("GST must be 15 characters if entered.")
+                .When(x => !string.IsNullOrEmpty(x.GST));
         }
     }
 }

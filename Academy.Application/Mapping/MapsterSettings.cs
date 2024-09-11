@@ -1,4 +1,9 @@
-﻿namespace Academy.Application.Mapping
+﻿using Academy.Application.Academies.Dto;
+using Academy.Shared;
+using Mapster;
+using Entites = Academy.Domain.Entities;
+
+namespace Academy.Application.Mapping
 {
     public class MapsterSettings
     {
@@ -9,6 +14,13 @@
 
             // This one is actually not necessary as it's mapped by convention
             // TypeAdapterConfig<Product, ProductDto>.NewConfig().Map(dest => dest.BrandName, src => src.Brand.Name);
+
+            TypeAdapterConfig<Entites.Academies, AcademiesDto>.NewConfig()
+                .Map(dest => dest.Logo, src => string.Format(Constants.CloudFrontUrl, src.Logo))
+                .Map(dest => dest.QR, src => string.Format(Constants.CloudFrontUrl, src.QRCode));
+
+
+
         }
     }
 }

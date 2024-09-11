@@ -1,6 +1,6 @@
 ﻿using Academy.Shared.Pagination.Models;
 
-namespace Academy.Shared.Pagination;
+namespace Academy.Shared.Pagination.Entity;
 
 public class EntitiesByPaginationFilterSpec<T, TResult> : EntitiesByBaseFilterSpec<T, TResult>
 {
