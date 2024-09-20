@@ -1,4 +1,5 @@
-﻿using Ardalis.Specification;
+﻿using Academy.Application.Academies.Specifications;
+using Ardalis.Specification;
 
 namespace Academy.Application.Persistence.Repository;
 

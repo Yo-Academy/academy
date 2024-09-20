@@ -18,22 +18,24 @@ using Entities = Academy.Domain.Entities;
 
 namespace Academy.Application.Academies.Command.Handlers
 {
-    public class CreateAcademyUserRequestHandler : IRequestHandler<CreateAcademyUserRequest, Result<UserDetailsDto>>
+    public class CreateAcademyUserRequestHandler : IRequestHandler<CreateAcademyUserRequest, Result>
     {
         private readonly IUserService _userService;
+        private readonly ITenantService _tenantService;
 
-        public CreateAcademyUserRequestHandler(IUserService userService)
+        public CreateAcademyUserRequestHandler(IUserService userService, ITenantService tenantService)
         {
             _userService = userService;
+            _tenantService = tenantService;
         }
-        public async Task<Result<UserDetailsDto>> Handle(CreateAcademyUserRequest request, CancellationToken cancellationToken)
+        public async Task<Result> Handle(CreateAcademyUserRequest request, CancellationToken cancellationToken)
         {
             try
             {
-                Result<UserDetailsDto> user = await _userService.CreateAsyncWithTenantId(request, request.Origin);
-                return user;
+                await _tenantService.CreateWithUsersAsync(request, cancellationToken);
+                return Result.Succeed(String.Format(DbRes.T("UserInsertedSuccessFully"), request.Role));
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
 
             }

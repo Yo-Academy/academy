@@ -1,4 +1,6 @@
-﻿using Academy.Infrastructure.Multitenancy;
+﻿using Academy.Application.Academies.Command.Models;
+using Academy.Application.Multitenancy;
+using Academy.Infrastructure.Multitenancy;
 using Academy.Shared.Multitenancy;
 using Finbuckle.MultiTenant;
 using Microsoft.Extensions.Configuration;
@@ -47,6 +49,23 @@ namespace Academy.Infrastructure.Persistence.Initialization
             // Then run the initialization in the new scope
             await scope.ServiceProvider.GetRequiredService<ApplicationDbInitializer>()
                 .InitializeAsync(cancellationToken);
+        }
+
+        public async Task InitializeApplicationDbForTenantWithUsersAsync(TenantInfo tenant, CreateAcademyUserRequest request, CancellationToken cancellationToken)
+        {
+            // First create a new scope
+            using var scope = _serviceProvider.CreateScope();
+
+            // Then set current tenant so the right connectionstring is used
+            _serviceProvider.GetRequiredService<IMultiTenantContextAccessor>()
+                .MultiTenantContext = new MultiTenantContext<TenantInfo>()
+                {
+                    TenantInfo = tenant
+                };
+
+            // Then run the initialization in the new scope
+            await scope.ServiceProvider.GetRequiredService<ApplicationDbInitializer>()
+                .CreateAcademyUsers(request, cancellationToken);
         }
 
         private async Task InitializeTenantDbAsync(CancellationToken cancellationToken)

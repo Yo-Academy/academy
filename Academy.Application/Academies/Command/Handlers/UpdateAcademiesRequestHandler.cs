@@ -1,5 +1,6 @@
 ﻿using Academy.Application.Academies.Command.Models;
 using Academy.Application.Academies.Dto;
+using Academy.Application.Academies.Specifications;
 using Academy.Application.Common.Exceptions;
 using Academy.Application.Common.Storage;
 using Academy.Application.Common.Storage.Filters;
@@ -77,6 +78,24 @@ namespace Academy.Application.Academies.Command.Handlers
             AcademiesToUpdate.QRCode = QRName;
 
             await _repository.UpdateAsync(AcademiesToUpdate, cancellationToken);
+
+            var getMappings = new GetAcademySportsByAcademyIdSpec(AcademiesToUpdate.Id);
+            var sports = await _repositoryAcademyMapping.ListAsync(getMappings);
+
+            if (sports != null)
+                await _repositoryAcademyMapping.DeleteRangeAsync(sports);
+
+            var academyList = new List<AcademySportsMapping>();
+            foreach (var item in request.Sports)
+            {
+                academyList.Add(new AcademySportsMapping(Guid.NewGuid(), AcademiesToUpdate.Id, item));
+            }
+
+            if (academyList.Count > 0)
+            {
+                await _repositoryAcademyMapping.AddRangeAsync(academyList);
+            }
+
             return Result.Succeed(AcademiesToUpdate.Adapt<AcademiesDto>());
         }
     }

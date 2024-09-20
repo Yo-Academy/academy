@@ -1,4 +1,6 @@
-﻿using Academy.Application.Persistence.Repository;
+﻿using Academy.Application.Academies.Command.Models;
+using Academy.Application.Multitenancy;
+using Academy.Application.Persistence.Repository;
 using Academy.Domain.Entities;
 using Academy.Infrastructure.Multitenancy;
 using Academy.Infrastructure.Persistence.Context;
@@ -64,7 +66,7 @@ namespace Academy.Infrastructure.Persistence.Initialization
                 }
 
                 // Assign permissions
-                if (roleName == Roles.Admin)
+                if (roleName == Roles.Admin || roleName == Roles.Owner)
                 {
                     await AssignPermissionsToRoleAsync(dbContext, readOnlyPermissionsList.Where(x => x.IsBasic).ToList(), role);
                 }
@@ -159,5 +161,51 @@ namespace Academy.Infrastructure.Persistence.Initialization
                 await _permissionsRepository.AddRangeAsync(enitiyPermissions);
             }
         }
+
+        public async Task CreateAcadmyUsers(CreateAcademyUserRequest request, CancellationToken cancellationToken)
+        {
+            await SeedUserWithRoleAsync(request);
+        }
+
+        private async Task SeedUserWithRoleAsync(CreateAcademyUserRequest request)
+        {
+            if (string.IsNullOrWhiteSpace(_currentTenant.Id) || string.IsNullOrWhiteSpace(_currentTenant.AdminEmail))
+            {
+                return;
+            }
+
+            if (await _userManager.Users.FirstOrDefaultAsync(u => u.PhoneNumber == request.PhoneNumber && u.TenantId == _currentTenant.Id)
+                is not ApplicationUser user)
+            {
+                string userName = $"{request.PhoneNumber}.{request.Role}".ToLowerInvariant();
+                user = new ApplicationUser()
+                {
+                    FirstName = request.FullName.Split(" ")[0],
+                    LastName = request.FullName.Split(" ")[1] ?? "",
+                    Email = _currentTenant.AdminEmail,
+                    PhoneNumber = request.PhoneNumber,
+                    UserName = userName,
+                    EmailConfirmed = true,
+                    PhoneNumberConfirmed = true,
+                    NormalizedUserName = userName.ToUpperInvariant(),
+                    IsActive = true,
+                    CountryCode = "91"
+                };
+
+                _logger.LogInformation("Seeding Default Admin User for '{tenantId}' Tenant.", _currentTenant.Id);
+                var password = new PasswordHasher<ApplicationUser>();
+                string defaultPassword = _config.GetSection(nameof(DefaultTenantSettings)).Get<DefaultTenantSettings>()!.Password;
+                user.PasswordHash = password.HashPassword(user, defaultPassword);
+                await _userManager.CreateAsync(user);
+            }
+
+            // Assign role to user
+            if (!await _userManager.IsInRoleAsync(user, request.Role))
+            {
+                _logger.LogInformation("Assigning Admin Role to Admin User for '{tenantId}' Tenant.", _currentTenant.Id);
+                await _userManager.AddToRoleAsync(user, request.Role);
+            }
+        }
+
     }
 }

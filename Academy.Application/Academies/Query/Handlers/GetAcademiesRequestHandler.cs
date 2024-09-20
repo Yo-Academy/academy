@@ -21,8 +21,7 @@ namespace Academy.Application.Academies.Query.Handlers
         {
             var spec = new GetAcademiesListSpec(request);
             var data = await _repository.PaginatedListAsync(spec, request.PageNumber, request.PageSize, cancellationToken);
-
-
+            
             if (data.Data != null && data.Data.Count > 0)
             {
                 var academiesList = data.Data.Adapt<List<AcademiesDto>>();
