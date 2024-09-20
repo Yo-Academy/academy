@@ -11,6 +11,7 @@ namespace Academy.Domain.Entities
         public string Name { get; set; }
         public string Image { get; set; }
         public bool IsActive { get; set; }
+        [ForeignKey("SportId")]
         public List<AcademySportsMapping> AcademySportsMapping { get; set; }
         public Sports() { }
 

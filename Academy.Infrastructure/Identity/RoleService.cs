@@ -1,5 +1,6 @@
 using Academy.Application.Common.Events;
 using Academy.Application.Identity.Roles;
+using Academy.Application.Identity.Roles.Dto;
 using Academy.Application.Identity.Users;
 using Academy.Infrastructure.Multitenancy;
 using Academy.Infrastructure.Persistence.Context;

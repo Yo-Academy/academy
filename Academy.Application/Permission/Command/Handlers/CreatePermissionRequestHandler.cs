@@ -25,5 +25,4 @@ namespace Academy.Application.Permission.Command.Handlers
             return Result.Succeed(responsePermission.Adapt<PermissionDto>());
         }
     }
-
 }

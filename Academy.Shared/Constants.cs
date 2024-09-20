@@ -10,7 +10,7 @@ namespace Academy.Shared
     {
         public static string DefaultPassword = "123456";
         public static string LocalizationResource = "LocalizationForm";
-        public static string CloudFrontUrl = "https://dtdk7qjqkj9k9.cloudfront.net/{0}";
+        public static string CloudFrontUrl = "https://dtdk7qjqkj9k9.cloudfront.net/{0}/{1}";
         public class ValidationRegex
         {
             public const string Name = "^[a-zA-Z ]*$";

@@ -1,3 +1,5 @@
+using Academy.Application.Identity.Roles.Dto;
+
 namespace Academy.Application.Identity.Roles
 {
     public interface IRoleService : ITransientService

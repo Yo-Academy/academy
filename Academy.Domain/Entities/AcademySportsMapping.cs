@@ -10,19 +10,13 @@ namespace Academy.Domain.Entities
     {
         public DefaultIdType AcademyId { get; set; }
         public DefaultIdType SportId { get; set; }
-
+        public virtual Academies Academy { get; set; }
+        public virtual Sports Sports { get; set; }
         public AcademySportsMapping(DefaultIdType id, DefaultIdType academyId, DefaultIdType sportId)
         {
             Id = id;
             AcademyId = academyId;
             SportId = sportId;
-        }
-
-        public AcademySportsMapping Update(DefaultIdType academyId, DefaultIdType sportId)
-        {
-            AcademyId = AcademyId;
-            SportId = sportId;
-            return this;
         }
     }
 }

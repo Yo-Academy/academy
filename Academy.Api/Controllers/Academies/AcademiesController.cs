@@ -35,7 +35,7 @@ namespace Academy.Api.Controllers.Academies
         }
 
         [HttpPost("academy-user")]
-        [TenantIdHeader]
+        //[TenantIdHeader]
         [OpenApiOperation("Creates an academy user.", "")]
         public async Task<ActionResult> CreateAcademyUserByRoleAsync(CreateAcademyUserRequest createAcademyUserCommand)
         {

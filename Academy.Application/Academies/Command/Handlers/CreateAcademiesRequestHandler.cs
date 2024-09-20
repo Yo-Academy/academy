@@ -20,20 +20,17 @@ namespace Academy.Application.Academies.Command.Handlers
     public class CreateAcademiesRequestHandler : IRequestHandler<CreateAcademiesRequest, Result<AcademyDetailsDto>>
     {
         private readonly IRepository<Entities.Academies> _repository;
-        private readonly IRepository<AcademySportsMapping> _repositoryAcademyMapping;
         private readonly IStorage _storage;
         private readonly ITenantService _tenantService;
         private readonly IReadRepository<Setting> _readRepoSetting;
 
         public CreateAcademiesRequestHandler(IRepository<Entities.Academies> repository,
             IStorage storage,
-            IRepository<AcademySportsMapping> repositoryAcademyMapping,
             ITenantService tenantService,
             IReadRepository<Setting> readRepoSetting)
         {
             _repository = repository;
             _storage = storage;
-            _repositoryAcademyMapping = repositoryAcademyMapping;
             _tenantService = tenantService;
             _readRepoSetting = readRepoSetting;
         }
@@ -108,20 +105,20 @@ namespace Academy.Application.Academies.Command.Handlers
             //Inserts RequirementSet Record
             try
             {
+                Academies.Subdomain = tanentId;
 
-                var responseAcademy = await _repository.AddAsync(Academies);
-
-
-                var academyList = new List<AcademySportsMapping>();
+                Academies.AcademySportsMappings = new List<AcademySportsMapping>();
                 foreach (var item in request.Sports)
                 {
-                    academyList.Add(new AcademySportsMapping(Guid.NewGuid(), Academies.Id, item));
+                    Academies.AcademySportsMappings.Add(new AcademySportsMapping(Guid.NewGuid(), Academies.Id, item));
                 }
+                
+                var responseAcademy = await _repository.AddAsync(Academies);
 
-                if (academyList.Count > 0)
-                {
-                    await _repositoryAcademyMapping.AddRangeAsync(academyList);
-                }
+                //if (academyList.Count > 0)
+                //{
+                //    await _repositoryAcademyMapping.AddRangeAsync(academyList);
+                //}
 
                 if (responseAcademy != null)
                 {
@@ -131,6 +128,7 @@ namespace Academy.Application.Academies.Command.Handlers
             }
             catch (Exception ex)
             {
+                return Result.Fail(ex.Message);
             }
             return Result.Fail();
         }

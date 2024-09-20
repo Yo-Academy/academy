@@ -13,7 +13,7 @@ namespace Academy.Application.Academies.Specifications
     {
         public GetAcademyByIdSpec(DefaultIdType id)
         {
-            Query.Where(x => x.Id == id).Include(x => x.AcademySportsMappings);
+            Query.Where(x => x.Id == id).Include(x => x.AcademySportsMappings).ThenInclude(x => x.Sports);
         }
     }
 }

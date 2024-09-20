@@ -11,7 +11,9 @@ namespace Academy.Shared.Authorization
 
         public static IReadOnlyList<string> DefaultRoles { get; } = new ReadOnlyCollection<string>(new[]
         {
-            SAdmin
+            SAdmin,
+            Admin,
+            Owner
         });
 
         public static bool IsDefault(string roleName) => DefaultRoles.Any(r => r == roleName);

@@ -8,7 +8,6 @@ namespace Academy.Application.Academies.Command.Models
     {
         public string Name { get; set; }
         public string ShortName { get; set; }
-        public string? AcademyId { get; set; }
         public string? GST { get; set; }
         public string Address { get; set; }
         public string City { get; set; }

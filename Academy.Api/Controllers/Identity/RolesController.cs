@@ -1,5 +1,7 @@
+using Academy.Application.Academies.Query.Models;
 using Academy.Application.Common.Exceptions;
 using Academy.Application.Identity.Roles;
+using Academy.Application.Identity.Roles.Query.Models;
 using Academy.Application.Identity.Users;
 using Academy.Infrastructure.Middleware;
 using FluentValidation;
@@ -11,14 +13,18 @@ namespace Academy.API.Controllers.Identity
         private readonly IRoleService _roleService;
         private readonly IValidator<CreateRoleRequest> _createValidator;
         private readonly IValidator<UpdateRoleRequest> _updateValidator;
+        private readonly IMediator _mediator;
+
 
         public RolesController(IRoleService roleService,
             IValidator<CreateRoleRequest> createValidator,
-            IValidator<UpdateRoleRequest> updateValidator)
+            IValidator<UpdateRoleRequest> updateValidator,
+            IMediator mediator)
         {
             _roleService = roleService;
             _createValidator = createValidator;
             _updateValidator = updateValidator;
+            _mediator = mediator;
         }
 
         [HttpGet]
@@ -26,7 +32,7 @@ namespace Academy.API.Controllers.Identity
         [OpenApiOperation("Get a list of all roles.", "")]
         public async Task<ActionResult> GetListAsync(CancellationToken cancellationToken)
         {
-            return Ok(await _roleService.GetListAsync(cancellationToken));
+            return Ok(await _mediator.Send(new GetRolesListRequest()));
         }
 
         [HttpGet("{id}")]
