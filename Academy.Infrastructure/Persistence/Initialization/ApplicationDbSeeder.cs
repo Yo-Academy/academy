@@ -123,7 +123,8 @@ namespace Academy.Infrastructure.Persistence.Initialization
                     PhoneNumberConfirmed = true,
                     NormalizedEmail = _currentTenant.AdminEmail?.ToUpperInvariant(),
                     NormalizedUserName = adminUserName.ToUpperInvariant(),
-                    IsActive = true
+                    IsActive = true,
+                    CountryCode = "91"
                 };
 
                 _logger.LogInformation("Seeding Default Admin User for '{tenantId}' Tenant.", _currentTenant.Id);
