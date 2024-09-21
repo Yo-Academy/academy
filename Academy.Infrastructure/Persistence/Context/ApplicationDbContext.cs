@@ -24,6 +24,10 @@ namespace Academy.Infrastructure.Persistence.Context
 
         public DbSet<CommonLookup> CommonLookups => Set<CommonLookup>();
 
+        public DbSet<Academies> Academies { get; set; }
+        public DbSet<AcademySportsMapping> AcademySportsMappings { get; set; }
+        public DbSet<Sports> Sports { get; set; }
+
         public DbSet<CommonLookupTranslation> CommonLookupTranslations => Set<CommonLookupTranslation>();
 
         public DbSet<Permissions> Permissions => Set<Permissions>();

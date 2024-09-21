@@ -22,7 +22,7 @@ namespace Academy.Domain.Entities
         public string? Logo { get; set; }
         public string? Subdomain { get; set; }
         public bool IsActive { get; set; }
-        [ForeignKey("AcademyId")]
+        //[ForeignKey("AcademyId")]
         public virtual ICollection<AcademySportsMapping> AcademySportsMappings { get; set; }
         //public virtual ICollection<ApplicationUser> ApplicationUsers { get; set; }  
         public Academies() { }

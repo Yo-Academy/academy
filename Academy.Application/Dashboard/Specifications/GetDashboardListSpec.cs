@@ -8,7 +8,7 @@ namespace Academy.Application.Dashboard.Specifications
     {
         public GetDashboardListSpec(GetDashboardListRequest request)
         {
-            Query.OrderByDescending(x => x.CreatedOn).Include(x => x.AcademySportsMappings);
+            Query.Where(x => x.Id == request.Id).OrderByDescending(x => x.CreatedOn).Include(x => x.AcademySportsMappings);
         }
     }
 }
