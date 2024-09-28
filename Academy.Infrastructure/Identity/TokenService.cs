@@ -123,7 +123,8 @@ namespace Academy.Infrastructure.Identity
                 throw new UnauthorizedException(DbRes.T("AuthenticationFailedMsg"));
             }
 
-            if (user.RefreshToken != request.RefreshToken || user.RefreshTokenExpiryTime <= DateTime.UtcNow)
+            var roles = await _userManager.GetRolesAsync(user);
+            if (!roles.Contains(Roles.SAdmin) && (user.RefreshToken != request.RefreshToken || user.RefreshTokenExpiryTime <= DateTime.UtcNow))
             {
                 throw new UnauthorizedException(DbRes.T("InvalidRefreshTokenMsg"));
             }

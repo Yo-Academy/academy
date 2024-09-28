@@ -9,6 +9,5 @@ namespace Academy.Infrastructure.Persistence.Initialization
         Task InitializeDatabasesAsync(CancellationToken cancellationToken);
         Task InitializeApplicationDbForTenantAsync(TenantInfo tenant, CancellationToken cancellationToken = default!);
         Task InitializeApplicationDbForTenantWithUsersAsync(TenantInfo tenant, CreateAcademyUserRequest request, CancellationToken cancellationToken = default!);
-
     }
 }

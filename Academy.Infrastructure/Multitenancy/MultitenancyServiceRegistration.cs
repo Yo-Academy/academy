@@ -1,4 +1,7 @@
-﻿using Academy.Application.Multitenancy;
+﻿using Academy.Application.Academies.Contracts;
+using Academy.Application.Identity.Users;
+using Academy.Application.Multitenancy;
+using Academy.Infrastructure.Identity;
 using Academy.Infrastructure.Persistence;
 using Academy.Infrastructure.Persistence.Initialization;
 using Academy.Shared.Authorization;

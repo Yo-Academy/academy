@@ -1,3 +1,4 @@
+using Academy.Application.Academies.Dto;
 using Academy.Application.Common.Events;
 using Academy.Application.Common.Mailing;
 using Academy.Application.Common.Storage;
@@ -6,6 +7,7 @@ using Academy.Application.Identity.Users;
 using Academy.Infrastructure.Auth;
 using Academy.Infrastructure.Multitenancy;
 using Academy.Infrastructure.Persistence.Context;
+using Academy.Infrastructure.Persistence.Initialization;
 using Academy.Shared.Authorization;
 using Finbuckle.MultiTenant;
 using Microsoft.Extensions.Configuration;
@@ -29,9 +31,6 @@ namespace Academy.Infrastructure.Identity
         private readonly IEmailHelper _emailHelper;
         private readonly IEmailTemplateRepository _emailTemplateRepository;
         private readonly IConfiguration _config;
-        private readonly ITenantResolver _tenantResolver;
-        private readonly IMultiTenantContextAccessor _multiTenantContextAccessor;
-        private readonly TenantDbContext _dbTenant;
 
         public UserService(
             SignInManager<ApplicationUser> signInManager,
@@ -47,10 +46,7 @@ namespace Academy.Infrastructure.Identity
             IJobService jobService,
             IEmailHelper emailHelper,
             IEmailTemplateRepository emailTemplateRepository,
-            IConfiguration config,
-            ITenantResolver tenantResolver,
-            IMultiTenantContextAccessor multiTenantContextAccessor,
-            TenantDbContext dbTenant)
+            IConfiguration config)
         {
             _signInManager = signInManager;
             _userManager = userManager;
@@ -66,9 +62,6 @@ namespace Academy.Infrastructure.Identity
             _emailHelper = emailHelper;
             _emailTemplateRepository = emailTemplateRepository;
             _config = config;
-            _tenantResolver = tenantResolver;
-            _multiTenantContextAccessor = multiTenantContextAccessor;
-            _dbTenant = dbTenant;
         }
 
         //public async Task<PaginationResponse<UserDetailsDto>> SearchAsync(UserListFilter filter, CancellationToken cancellationToken)
@@ -117,6 +110,12 @@ namespace Academy.Infrastructure.Identity
                     .ToListAsync(cancellationToken))
                 .Adapt<List<UserDetailsDto>>());
 
+        public async Task<List<AcademyUsersDetailsDto>> GetTenantUsersListAsync(CancellationToken cancellationToken) =>
+            (await _userManager.Users
+                    .AsNoTracking()
+                    .ToListAsync(cancellationToken))
+                .Adapt<List<AcademyUsersDetailsDto>>();
+
         public Task<int> GetCountAsync(CancellationToken cancellationToken) =>
             _userManager.Users.AsNoTracking().CountAsync(cancellationToken);
 
@@ -153,5 +152,15 @@ namespace Academy.Infrastructure.Identity
             return Result.Succeed(user.Adapt<UserDetailsDto>());
         }
 
+        public async Task<List<AcademyUsersDetailsDto>> GetTenantUsersByRole(string role, CancellationToken cancellationToken)
+        {
+            var query = await (from u in _db.Users
+                               join ur in _db.UserRoles on u.Id equals ur.UserId
+                               join r in _db.Roles on ur.RoleId equals r.Id
+                               where r.NormalizedName == role.ToUpperInvariant()
+                               select u).ToListAsync(cancellationToken);
+
+            return query.Adapt<List<AcademyUsersDetailsDto>>();
+        }
     }
 }
