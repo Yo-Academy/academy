@@ -27,7 +27,6 @@ namespace Academy.Application.Subscription.Query.Handlers
 
         public async Task<Result<SubscriptionDto>> Handle(GetSubscriptionDetailsRequest request, CancellationToken cancellationToken)
         {
-            var spec = new GetSubscriptionByIdSpec(request.Id);
             var subscriptionDetail = new SubscriptionDto();
             var data = await _subscriptionReadRepository.GetByIdAsync(request.Id, cancellationToken);
             if (data != null)
