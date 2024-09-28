@@ -20,6 +20,7 @@ namespace Academy.Application.Batch.Query.Handlers
 
         public async Task<Result<BatchDetailsDto>> Handle(GetBatchDetailsRequest request, CancellationToken cancellationToken)
         {
+            var spec = new GetBatchByIdSpec(request.Id);
             var batchDetail = new BatchDetailsDto();
             var data = await _batchReadRepository.GetByIdAsync(request.Id, cancellationToken);
             if (data != null)
