@@ -192,6 +192,9 @@
   <data name="EnterValidPincode" xml:space="preserve">
     <value>Please enter a valid pincode.</value>
   </data>
+  <data name="ErrorMessageAcademyNotFound" xml:space="preserve">
+    <value>Academy not found.</value>
+  </data>
   <data name="Export" xml:space="preserve">
     <value>Export</value>
   </data>

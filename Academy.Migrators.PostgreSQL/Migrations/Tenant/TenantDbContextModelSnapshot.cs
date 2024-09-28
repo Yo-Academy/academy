@@ -29,7 +29,6 @@ namespace Academy.Migrators.PostgreSQL.Migrations.Tenant
                         .HasColumnType("character varying(64)");
 
                     b.Property<string>("AdminEmail")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("ConnectionString")
@@ -59,10 +58,6 @@ namespace Academy.Migrators.PostgreSQL.Migrations.Tenant
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Phonenumber")
                         .IsRequired()
                         .HasColumnType("text");
 

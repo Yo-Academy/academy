@@ -24,13 +24,17 @@ namespace Academy.Shared.Authorization
         public const string UserRoles = nameof(UserRoles);
         public const string Roles = nameof(Roles);
         public const string RoleClaims = nameof(RoleClaims);
+        public const string Permission = nameof(Permission);
+        public const string Dashboard = nameof(Dashboard);
+        public const string Academy = nameof(Academy);
     }
 
-    public static class Permissions
+    public static class PermissionsList
     {
         private static readonly Permission[] _all = new Permission[]
         {
-            //new("View Dashboard", Action.View, Resource.Dashboard),
+            new("View Dashboard", Action.View, Resource.Dashboard, IsRoot: true),
+            new("View Dashboard", Action.View, Resource.Academy, IsRoot: true),
             //new("View Hangfire", Action.View, Resource.Hangfire),
             new("View Users", Action.View, Resource.Users),
             new("Search Users", Action.Search, Resource.Users),

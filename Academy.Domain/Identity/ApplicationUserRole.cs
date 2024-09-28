@@ -7,5 +7,7 @@
         public DateTime CreatedOn { get; set; }
         public DefaultIdType LastModifiedBy { get; set; }
         public DateTime? LastModifiedOn { get; set; }
+        public ApplicationUser? User { get; set; }
+        public ApplicationRole? Role { get; set; }
     }
 }

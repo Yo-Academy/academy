@@ -22,6 +22,7 @@ namespace Academy.Domain.Identity
         public DateTime? DeletedOn { get; set; }
         public DefaultIdType? DeletedBy { get; set; }
         public bool IsDeleted { get; set; }
+        public ICollection<ApplicationUserRole> UserRoles { get; set; }
 
         public ApplicationRole(string name, string? description = null)
             : base(name)

@@ -1,6 +1,7 @@
 ﻿using Academy.Application.Academies.Dto;
 using Academy.Application.Academies.Query.Models;
 using Academy.Shared.Pagination;
+using Academy.Shared.Pagination.Entity;
 using Ardalis.Specification;
 using Entity = Academy.Domain.Entities;
 

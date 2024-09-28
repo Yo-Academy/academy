@@ -1,4 +1,4 @@
-namespace Academy.Application.Identity.Roles
+namespace Academy.Application.Identity.Roles.Dto
 {
     public class RoleDto
     {

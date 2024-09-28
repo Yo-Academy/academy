@@ -66,6 +66,9 @@ namespace Academy.Infrastructure.Persistence
             services.AddScoped(typeof(REPO.IRepository<>), typeof(DbRepository<>));
             services.AddScoped(typeof(REPO.IReadRepository<>), typeof(DbRepository<>));
 
+            //Repo registration without Aggregated Root
+            services.AddScoped(typeof(REPO.IReadOnlyRepository<>), typeof(DbRepositoryWA<>));
+            services.AddScoped(typeof(REPO.IWriteRepository<>), typeof(DbRepositoryWA<>));
 
             //    // Add Repositories
             //    services.AddScoped(typeof(IRepository<>), typeof(ApplicationDbRepository<>));

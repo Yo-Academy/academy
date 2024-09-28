@@ -1,4 +1,6 @@
-﻿using Academy.Application.Multitenancy;
+﻿using Academy.Application.Academies.Command.Models;
+using Academy.Application.Identity.Users;
+using Academy.Application.Multitenancy;
 using Academy.Infrastructure.Persistence;
 using Academy.Infrastructure.Persistence.Initialization;
 using Finbuckle.MultiTenant;
@@ -50,7 +52,7 @@ namespace Academy.Infrastructure.Multitenancy
         {
             if (request.ConnectionString?.Trim() == _dbSettings.ConnectionString.Trim()) request.ConnectionString = string.Empty;
 
-            var tenant = new TenantInfo(request.Id, request.Name, request.ConnectionString, request.AdminEmail, _config, request.Phonenumber, request.Issuer);
+            var tenant = new TenantInfo(request.Id, request.Name, request.ConnectionString, request.AdminEmail, _config, request.Issuer);
             await _tenantStore.TryAddAsync(tenant);
 
             // TODO: run this in a hangfire job? will then have to send mail when it's ready or not
@@ -65,6 +67,22 @@ namespace Academy.Infrastructure.Multitenancy
             }
 
             return tenant.Adapt<TenantDto>();
+        }
+
+        public async Task CreateWithUsersAsync(CreateAcademyUserRequest request, CancellationToken cancellationToken)
+        {
+            var tenant = await _tenantStore.TryGetAsync(request.TenantId);
+
+            // TODO: run this in a hangfire job? will then have to send mail when it's ready or not
+            try
+            {
+                if (tenant != null)
+                    await _dbInitializer.InitializeApplicationDbForTenantWithUsersAsync(tenant, request, cancellationToken);
+            }
+            catch
+            {
+                throw;
+            }
         }
 
         public async Task<TenantDto> ActivateAsync(string id)

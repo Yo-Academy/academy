@@ -1,3 +1,5 @@
+using Academy.Application.Academies.Command.Models;
+using Academy.Application.Multitenancy;
 using Academy.Infrastructure.Persistence.Context;
 using Finbuckle.MultiTenant;
 using Microsoft.Extensions.Logging;
@@ -35,6 +37,16 @@ namespace Academy.Infrastructure.Persistence.Initialization
 
                     await _dbSeeder.SeedDatabaseAsync(_dbContext, cancellationToken);
                 }
+            }
+        }
+
+        public async Task CreateAcademyUsers(CreateAcademyUserRequest request, CancellationToken cancellationToken)
+        {
+            if (await _dbContext.Database.CanConnectAsync(cancellationToken))
+            {
+                _logger.LogInformation("Connection to {tenantId}'s Database Succeeded.", _currentTenant.Id);
+
+                await _dbSeeder.CreateAcadmyUsers(request, cancellationToken);
             }
         }
     }

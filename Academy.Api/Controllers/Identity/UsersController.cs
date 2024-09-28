@@ -1,7 +1,9 @@
+using Academy.Application.Academies.Command.Models;
 using Academy.Application.Common.Exceptions;
 using Academy.Application.Identity.Tokens;
 using Academy.Application.Identity.Users;
 using Academy.Application.Identity.Users.Password;
+using Academy.Infrastructure.Multitenancy;
 using FluentValidation;
 
 namespace Academy.API.Controllers.Identity
@@ -13,18 +15,21 @@ namespace Academy.API.Controllers.Identity
         private readonly IValidator<UpdateUserRequest> _updateValidator;
         private readonly IValidator<ForgotPasswordRequest> _forgotPasswordValidator;
         private readonly IValidator<ResetPasswordRequest> _resetPasswordValidator;
+        private readonly Mediator _mediator;
 
         public UsersController(IUserService userService,
             IValidator<CreateUserRequest> createValidator,
             IValidator<UpdateUserRequest> updateValidator,
             IValidator<ForgotPasswordRequest> forgotPasswordValidator,
-            IValidator<ResetPasswordRequest> resetPasswordValidator)
+            IValidator<ResetPasswordRequest> resetPasswordValidator,
+            Mediator mediator)
         {
             _userService = userService;
             _createValidator = createValidator;
             _updateValidator = updateValidator;
             _forgotPasswordValidator = forgotPasswordValidator;
             _resetPasswordValidator = resetPasswordValidator;
+            _mediator = mediator;
         }
 
         [HttpGet]
@@ -249,5 +254,21 @@ namespace Academy.API.Controllers.Identity
         {
             return Ok(Result.Succeed(await _userService.ExistsWithPhoneNumberAsync(phonenumber)));
         }
+
+        //[HttpPost("academy-user")]
+        //[OpenApiOperation("Creates an academy user.", "")]
+        //[TenantIdHeader]
+        //public async Task<ActionResult> CreateAcademyUserByRoleAsync(CreateAcademyUserRequest createAcademyUserCommand)
+        //{
+        //    createAcademyUserCommand.Origin = Request.Scheme;
+        //    // Switch to a new tenant
+        //    await _tenantResolverService.SwitchTenantAsync(HttpContext, createAcademyUserCommand.TenantId);
+
+        //    Result<UserDetailsDto> createResult = await _mediator.Send(createAcademyUserCommand);
+
+        //    await _tenantResolverService.RevertToPreviousTenantAsync(HttpContext);
+
+        //    return CreatedAtRoute(new { id = createResult.Value?.Id }, createResult);
+        //}
     }
 }

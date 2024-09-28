@@ -4,6 +4,7 @@ using Academy.Application.Common.Storage;
 using Academy.Application.Contracts.Persistence;
 using Academy.Application.Identity.Users;
 using Academy.Infrastructure.Auth;
+using Academy.Infrastructure.Multitenancy;
 using Academy.Infrastructure.Persistence.Context;
 using Academy.Shared.Authorization;
 using Finbuckle.MultiTenant;
@@ -28,7 +29,9 @@ namespace Academy.Infrastructure.Identity
         private readonly IEmailHelper _emailHelper;
         private readonly IEmailTemplateRepository _emailTemplateRepository;
         private readonly IConfiguration _config;
-
+        private readonly ITenantResolver _tenantResolver;
+        private readonly IMultiTenantContextAccessor _multiTenantContextAccessor;
+        private readonly TenantDbContext _dbTenant;
 
         public UserService(
             SignInManager<ApplicationUser> signInManager,
@@ -44,7 +47,10 @@ namespace Academy.Infrastructure.Identity
             IJobService jobService,
             IEmailHelper emailHelper,
             IEmailTemplateRepository emailTemplateRepository,
-            IConfiguration config)
+            IConfiguration config,
+            ITenantResolver tenantResolver,
+            IMultiTenantContextAccessor multiTenantContextAccessor,
+            TenantDbContext dbTenant)
         {
             _signInManager = signInManager;
             _userManager = userManager;
@@ -60,6 +66,9 @@ namespace Academy.Infrastructure.Identity
             _emailHelper = emailHelper;
             _emailTemplateRepository = emailTemplateRepository;
             _config = config;
+            _tenantResolver = tenantResolver;
+            _multiTenantContextAccessor = multiTenantContextAccessor;
+            _dbTenant = dbTenant;
         }
 
         //public async Task<PaginationResponse<UserDetailsDto>> SearchAsync(UserListFilter filter, CancellationToken cancellationToken)
@@ -143,5 +152,6 @@ namespace Academy.Infrastructure.Identity
 
             return Result.Succeed(user.Adapt<UserDetailsDto>());
         }
+
     }
 }

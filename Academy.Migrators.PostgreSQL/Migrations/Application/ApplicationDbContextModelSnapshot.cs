@@ -60,8 +60,10 @@ namespace Academy.Migrators.PostgreSQL.Migrations.Application
                         .HasColumnName("deleted_on");
 
                     b.Property<string>("GST")
-                        .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean")
@@ -77,7 +79,6 @@ namespace Academy.Migrators.PostgreSQL.Migrations.Application
                         .HasColumnName("last_modified_on");
 
                     b.Property<string>("Logo")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Name")
@@ -89,23 +90,22 @@ namespace Academy.Migrators.PostgreSQL.Migrations.Application
                         .HasColumnType("text");
 
                     b.Property<string>("QRCode")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("ShortName")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("TenantId")
-                        .IsRequired()
-                        .HasMaxLength(64)
-                        .HasColumnType("character varying(64)");
+                    b.Property<string>("Subdomain")
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Academies");
+                    b.HasIndex("CreatedBy");
 
-                    b.HasAnnotation("Finbuckle:MultiTenant", true);
+                    b.HasIndex("LastModifiedBy");
+
+                    b.ToTable("Academies");
                 });
 
             modelBuilder.Entity("Academy.Domain.Entities.AcademySportsMapping", b =>
@@ -152,6 +152,9 @@ namespace Academy.Migrators.PostgreSQL.Migrations.Application
                     b.Property<Guid>("SportId")
                         .HasColumnType("uuid");
 
+                    b.Property<Guid?>("SportsId")
+                        .HasColumnType("uuid");
+
                     b.Property<string>("TenantId")
                         .IsRequired()
                         .HasMaxLength(64)
@@ -161,7 +164,11 @@ namespace Academy.Migrators.PostgreSQL.Migrations.Application
 
                     b.HasIndex("AcademyId");
 
-                    b.HasIndex("SportId");
+                    b.HasIndex("CreatedBy");
+
+                    b.HasIndex("LastModifiedBy");
+
+                    b.HasIndex("SportsId");
 
                     b.ToTable("AcademySportsMapping");
 
@@ -289,6 +296,10 @@ namespace Academy.Migrators.PostgreSQL.Migrations.Application
 
                     b.HasIndex("CoachingId");
 
+                    b.HasIndex("CreatedBy");
+
+                    b.HasIndex("LastModifiedBy");
+
                     b.HasIndex("SportsId");
 
                     b.ToTable("Batch");
@@ -341,6 +352,10 @@ namespace Academy.Migrators.PostgreSQL.Migrations.Application
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CreatedBy");
+
+                    b.HasIndex("LastModifiedBy");
 
                     b.ToTable("Coaching");
                 });
@@ -576,6 +591,58 @@ namespace Academy.Migrators.PostgreSQL.Migrations.Application
                     b.HasAnnotation("Finbuckle:MultiTenant", true);
                 });
 
+            modelBuilder.Entity("Academy.Domain.Entities.Permissions", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Action")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("DeletedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsBasic")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsRoot")
+                        .HasColumnType("boolean");
+
+                    b.Property<Guid>("LastModifiedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("LastModifiedOn")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Resource")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Permissions");
+                });
+
             modelBuilder.Entity("Academy.Domain.Entities.PlanType", b =>
                 {
                     b.Property<Guid>("Id")
@@ -623,6 +690,10 @@ namespace Academy.Migrators.PostgreSQL.Migrations.Application
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CreatedBy");
+
+                    b.HasIndex("LastModifiedBy");
 
                     b.ToTable("PlanType");
                 });
@@ -737,16 +808,13 @@ namespace Academy.Migrators.PostgreSQL.Migrations.Application
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("TenantId")
-                        .IsRequired()
-                        .HasMaxLength(64)
-                        .HasColumnType("character varying(64)");
-
                     b.HasKey("Id");
 
-                    b.ToTable("Sports");
+                    b.HasIndex("CreatedBy");
 
-                    b.HasAnnotation("Finbuckle:MultiTenant", true);
+                    b.HasIndex("LastModifiedBy");
+
+                    b.ToTable("Sports");
                 });
 
             modelBuilder.Entity("Academy.Domain.Entities.Subscription", b =>
@@ -807,6 +875,10 @@ namespace Academy.Migrators.PostgreSQL.Migrations.Application
                     b.HasIndex("BatchId");
 
                     b.HasIndex("CoachingId");
+
+                    b.HasIndex("CreatedBy");
+
+                    b.HasIndex("LastModifiedBy");
 
                     b.HasIndex("PlanTypeId");
 
@@ -929,6 +1001,10 @@ namespace Academy.Migrators.PostgreSQL.Migrations.Application
                         .IsConcurrencyToken()
                         .HasColumnType("text");
 
+                    b.Property<string>("CountryCode")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<Guid>("CreatedBy")
                         .HasColumnType("uuid");
 
@@ -982,6 +1058,9 @@ namespace Academy.Migrators.PostgreSQL.Migrations.Application
                     b.Property<string>("NormalizedUserName")
                         .HasMaxLength(256)
                         .HasColumnType("character varying(256)");
+
+                    b.Property<string>("OTP")
+                        .HasColumnType("text");
 
                     b.Property<string>("ObjectId")
                         .HasMaxLength(256)
@@ -1213,23 +1292,48 @@ namespace Academy.Migrators.PostgreSQL.Migrations.Application
                     b.HasAnnotation("Finbuckle:MultiTenant", true);
                 });
 
+            modelBuilder.Entity("Academy.Domain.Entities.Academies", b =>
+                {
+                    b.HasOne("Academy.Domain.Identity.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("CreatedBy")
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .IsRequired()
+                        .HasConstraintName("FK_Entity_ApplicationUser_CreatedBy");
+
+                    b.HasOne("Academy.Domain.Identity.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("LastModifiedBy")
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .IsRequired()
+                        .HasConstraintName("FK_Entity_ApplicationUser_LastModifiedBy");
+                });
+
             modelBuilder.Entity("Academy.Domain.Entities.AcademySportsMapping", b =>
                 {
-                    b.HasOne("Academy.Domain.Entities.Academies", "Academy")
-                        .WithMany()
+                    b.HasOne("Academy.Domain.Entities.Academies", null)
+                        .WithMany("AcademySportsMappings")
                         .HasForeignKey("AcademyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Academy.Domain.Entities.Sports", "Sport")
+                    b.HasOne("Academy.Domain.Identity.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("CreatedBy")
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .IsRequired()
+                        .HasConstraintName("FK_Entity_ApplicationUser_CreatedBy");
+
+                    b.HasOne("Academy.Domain.Identity.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("LastModifiedBy")
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .IsRequired()
+                        .HasConstraintName("FK_Entity_ApplicationUser_LastModifiedBy");
+
+                    b.HasOne("Academy.Domain.Entities.Sports", null)
                         .WithMany("AcademySportsMapping")
-                        .HasForeignKey("SportId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Academy");
-
-                    b.Navigation("Sport");
+                        .HasForeignKey("SportsId");
                 });
 
             modelBuilder.Entity("Academy.Domain.Entities.Batch", b =>
@@ -1239,6 +1343,20 @@ namespace Academy.Migrators.PostgreSQL.Migrations.Application
                         .HasForeignKey("CoachingId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("Academy.Domain.Identity.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("CreatedBy")
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .IsRequired()
+                        .HasConstraintName("FK_Entity_ApplicationUser_CreatedBy");
+
+                    b.HasOne("Academy.Domain.Identity.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("LastModifiedBy")
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .IsRequired()
+                        .HasConstraintName("FK_Entity_ApplicationUser_LastModifiedBy");
 
                     b.HasOne("Academy.Domain.Entities.Sports", "Sports")
                         .WithMany()
@@ -1251,6 +1369,23 @@ namespace Academy.Migrators.PostgreSQL.Migrations.Application
                     b.Navigation("Sports");
                 });
 
+            modelBuilder.Entity("Academy.Domain.Entities.Coaching", b =>
+                {
+                    b.HasOne("Academy.Domain.Identity.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("CreatedBy")
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .IsRequired()
+                        .HasConstraintName("FK_Entity_ApplicationUser_CreatedBy");
+
+                    b.HasOne("Academy.Domain.Identity.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("LastModifiedBy")
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .IsRequired()
+                        .HasConstraintName("FK_Entity_ApplicationUser_LastModifiedBy");
+                });
+
             modelBuilder.Entity("Academy.Domain.Entities.CommonLookupTranslation", b =>
                 {
                     b.HasOne("Academy.Domain.Entities.CommonLookup", "CommonLookup")
@@ -1260,6 +1395,40 @@ namespace Academy.Migrators.PostgreSQL.Migrations.Application
                         .IsRequired();
 
                     b.Navigation("CommonLookup");
+                });
+
+            modelBuilder.Entity("Academy.Domain.Entities.PlanType", b =>
+                {
+                    b.HasOne("Academy.Domain.Identity.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("CreatedBy")
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .IsRequired()
+                        .HasConstraintName("FK_Entity_ApplicationUser_CreatedBy");
+
+                    b.HasOne("Academy.Domain.Identity.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("LastModifiedBy")
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .IsRequired()
+                        .HasConstraintName("FK_Entity_ApplicationUser_LastModifiedBy");
+                });
+
+            modelBuilder.Entity("Academy.Domain.Entities.Sports", b =>
+                {
+                    b.HasOne("Academy.Domain.Identity.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("CreatedBy")
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .IsRequired()
+                        .HasConstraintName("FK_Entity_ApplicationUser_CreatedBy");
+
+                    b.HasOne("Academy.Domain.Identity.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("LastModifiedBy")
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .IsRequired()
+                        .HasConstraintName("FK_Entity_ApplicationUser_LastModifiedBy");
                 });
 
             modelBuilder.Entity("Academy.Domain.Entities.Subscription", b =>
@@ -1275,6 +1444,20 @@ namespace Academy.Migrators.PostgreSQL.Migrations.Application
                         .HasForeignKey("CoachingId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("Academy.Domain.Identity.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("CreatedBy")
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .IsRequired()
+                        .HasConstraintName("FK_Entity_ApplicationUser_CreatedBy");
+
+                    b.HasOne("Academy.Domain.Identity.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("LastModifiedBy")
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .IsRequired()
+                        .HasConstraintName("FK_Entity_ApplicationUser_LastModifiedBy");
 
                     b.HasOne("Academy.Domain.Entities.PlanType", "PlanType")
                         .WithMany()
@@ -1326,17 +1509,21 @@ namespace Academy.Migrators.PostgreSQL.Migrations.Application
 
             modelBuilder.Entity("Academy.Domain.Identity.ApplicationUserRole", b =>
                 {
-                    b.HasOne("Academy.Domain.Identity.ApplicationRole", null)
-                        .WithMany()
+                    b.HasOne("Academy.Domain.Identity.ApplicationRole", "Role")
+                        .WithMany("UserRoles")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Academy.Domain.Identity.ApplicationUser", null)
-                        .WithMany()
+                    b.HasOne("Academy.Domain.Identity.ApplicationUser", "User")
+                        .WithMany("ApplicationUserRole")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Role");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Academy.Domain.Identity.ApplicationUserToken", b =>
@@ -1348,6 +1535,11 @@ namespace Academy.Migrators.PostgreSQL.Migrations.Application
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Academy.Domain.Entities.Academies", b =>
+                {
+                    b.Navigation("AcademySportsMappings");
+                });
+
             modelBuilder.Entity("Academy.Domain.Entities.CommonLookup", b =>
                 {
                     b.Navigation("CommonLookupTranslations");
@@ -1356,6 +1548,16 @@ namespace Academy.Migrators.PostgreSQL.Migrations.Application
             modelBuilder.Entity("Academy.Domain.Entities.Sports", b =>
                 {
                     b.Navigation("AcademySportsMapping");
+                });
+
+            modelBuilder.Entity("Academy.Domain.Identity.ApplicationRole", b =>
+                {
+                    b.Navigation("UserRoles");
+                });
+
+            modelBuilder.Entity("Academy.Domain.Identity.ApplicationUser", b =>
+                {
+                    b.Navigation("ApplicationUserRole");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,5 +1,6 @@
 using Academy.Application.Common.Events;
 using Academy.Application.Identity.Roles;
+using Academy.Application.Identity.Roles.Dto;
 using Academy.Application.Identity.Users;
 using Academy.Infrastructure.Multitenancy;
 using Academy.Infrastructure.Persistence.Context;
@@ -194,6 +195,23 @@ namespace Academy.Infrastructure.Identity
             await _events.PublishAsync(new ApplicationRoleDeletedEvent(role.Id, role.Name!));
 
             return string.Format(DbRes.T("RoleDeletedWithParamsMsg"), role.Name);
+        }
+
+        public async Task<Guid> GetRoleByRoleCodeAsync(string roleName)
+        {
+            if (string.IsNullOrWhiteSpace(roleName))
+            {
+                return Guid.Empty;
+            }
+
+            var role = await _db.Roles.FirstOrDefaultAsync(x => !String.IsNullOrWhiteSpace(x.Name) && x.Name.ToLower().Equals(roleName.ToLower()));
+
+            return role?.Id ?? Guid.Empty;
+        }
+
+        public async Task<List<string>> GetPermissionsByRoleId(DefaultIdType roleId)
+        {
+            return await _db.RoleClaims.Where(x => x.ClaimType == Claims.Permission && x.RoleId == roleId).Select(x => x.ClaimValue).ToListAsync();
         }
     }
 }
