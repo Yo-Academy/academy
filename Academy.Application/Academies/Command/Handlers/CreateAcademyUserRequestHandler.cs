@@ -22,11 +22,15 @@ namespace Academy.Application.Academies.Command.Handlers
     {
         private readonly IUserService _userService;
         private readonly ITenantService _tenantService;
+        private readonly IServiceProvider _serviceProvider;
 
-        public CreateAcademyUserRequestHandler(IUserService userService, ITenantService tenantService)
+        public CreateAcademyUserRequestHandler(IUserService userService,
+            ITenantService tenantService,
+            IServiceProvider serviceProvider)
         {
             _userService = userService;
             _tenantService = tenantService;
+            _serviceProvider = serviceProvider;
         }
         public async Task<Result> Handle(CreateAcademyUserRequest request, CancellationToken cancellationToken)
         {

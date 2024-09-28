@@ -1,4 +1,5 @@
 using Academy.Application.Academies.Command.Models;
+using Academy.Application.Academies.Dto;
 using Academy.Application.Identity.Users.Password;
 using System.Security.Claims;
 
@@ -13,6 +14,7 @@ namespace Academy.Application.Identity.Users
         Task<bool> ExistsWithPhoneNumberAsync(string phoneNumber, DefaultIdType? exceptId = null);
 
         Task<Result<List<UserDetailsDto>>> GetListAsync(CancellationToken cancellationToken);
+        Task<List<AcademyUsersDetailsDto>> GetTenantUsersListAsync(CancellationToken cancellationToken);
 
         Task<int> GetCountAsync(CancellationToken cancellationToken);
 
@@ -40,5 +42,7 @@ namespace Academy.Application.Identity.Users
 
         Task<string> DeleteAsync(DefaultIdType id);
         Task<Result<UserDetailsDto>> CreateAsyncWithTenantId(CreateAcademyUserRequest request, string origin);
+
+        Task<List<AcademyUsersDetailsDto>> GetTenantUsersByRole(string role, CancellationToken cancellationToken);
     }
 }

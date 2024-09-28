@@ -162,7 +162,7 @@ namespace Academy.Infrastructure.Persistence.Initialization
             }
         }
 
-        public async Task CreateAcadmyUsers(CreateAcademyUserRequest request, CancellationToken cancellationToken)
+        internal async Task CreateAcadmyUsers(CreateAcademyUserRequest request, CancellationToken cancellationToken)
         {
             await SeedUserWithRoleAsync(request);
         }
