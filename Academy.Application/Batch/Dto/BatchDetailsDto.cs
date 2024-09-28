@@ -1,10 +1,13 @@
 ﻿using Academy.Domain.Entities;
-using System.ComponentModel.DataAnnotations.Schema;
-using Entities = Academy.Domain.Entities;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Academy.Application.Batch.Dto
 {
-    public class BatchDto
+    public class BatchDetailsDto
     {
         public DefaultIdType Id { get; set; }
         public DefaultIdType SportsId { get; set; }
@@ -13,7 +16,6 @@ namespace Academy.Application.Batch.Dto
         public TimeOnly StartTime { get; set; }
         public TimeOnly EndTime { get; set; }
         public string Days { get; set; }
-        public virtual Entities.Coaching Coaching { get; set; }
-        public virtual Entities.Sports Sports { get; set; }
+        public Sports Sports { get; set; }
     }
 }

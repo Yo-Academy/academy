@@ -40,11 +40,10 @@ namespace Academy.Api.Controllers.Subscription
             return Ok(await _mediator.Send(new GetSubscriptionDetailsRequest { Id = id }));
         }
 
-        [HttpPut("{id}")]
+        [HttpPut]
         [OpenApiOperation("Updates subscription details.", "")]
-        public async Task<ActionResult> UpdateAsync(Guid id, UpdateSubscriptionRequest updateBatchCommand)
+        public async Task<ActionResult> UpdateAsync(UpdateSubscriptionRequest updateBatchCommand)
         {
-            updateBatchCommand.Id = id;
             return Ok(await _mediator.Send(updateBatchCommand));
         }
     }

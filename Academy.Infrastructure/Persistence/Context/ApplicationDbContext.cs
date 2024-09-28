@@ -22,6 +22,11 @@ namespace Academy.Infrastructure.Persistence.Context
         public DbSet<EmailTemplate> EmailTemplates => Set<EmailTemplate>();
         public DbSet<AuditLog> AuditLogs => Set<AuditLog>();
 
+       // public DbSet<Batch> Batches => Set<Batch>();
+      //  public DbSet<Sports> Sports=> Set<Sports>();
+
+      //  public DbSet<Coaching> Coachings => Set<Coaching>();
+
         public DbSet<CommonLookup> CommonLookups => Set<CommonLookup>();
 
         public DbSet<CommonLookupTranslation> CommonLookupTranslations => Set<CommonLookupTranslation>();

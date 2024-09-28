@@ -1,5 +1,6 @@
 ﻿using Academy.API.Controllers;
 using Academy.Application.PlanType.Command.Models;
+using Academy.Application.PlanType.Query.Models;
 
 namespace Academy.Api.Controllers.PlanType
 {
@@ -16,6 +17,13 @@ namespace Academy.Api.Controllers.PlanType
         public async Task<ActionResult> CreateAsync(CreatePlanTypeRequest createPlanTypeCommand)
         {
            return Ok( await _mediator.Send(createPlanTypeCommand));
+        }
+
+        [HttpGet]
+        [OpenApiOperation("Gets a list of plan type.", "")]
+        public async Task<ActionResult> GetListAsync()
+        {
+            return Ok(await _mediator.Send(new GetPlanTypeListRequest()));
         }
     }
 
