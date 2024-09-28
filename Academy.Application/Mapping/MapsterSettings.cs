@@ -1,4 +1,5 @@
 ﻿using Academy.Application.Academies.Dto;
+using Academy.Domain.Identity;
 using Academy.Shared;
 using Mapster;
 using Entites = Academy.Domain.Entities;
@@ -24,6 +25,8 @@ namespace Academy.Application.Mapping
                 .Map(dest => dest.QRCode, src => string.Format(Constants.CloudFrontUrl, Constants.S3Directory.QR, src.QRCode))
                 .Map(dest => dest.Sports, src => src.AcademySportsMappings.Count > 0 ? src.AcademySportsMappings.Select(x => x.SportId).ToList() : new List<Guid>());
 
+            TypeAdapterConfig<ApplicationUser, AcademyUsersDetailsDto>.NewConfig()
+                .Map(dest => dest.FullName, src => src.FullName());
         }
     }
 }

@@ -13,7 +13,7 @@ namespace Academy.Domain.Identity
         {
             UserName = userName;
         }
-        public override string? Email { get => base.Email ; set => base.Email = value; }
+        public override string? Email { get => base.Email; set => base.Email = value; }
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
         public string? ImageUrl { get; set; }
@@ -36,5 +36,6 @@ namespace Academy.Domain.Identity
         public string CountryCode { get; set; }
         public string TenantId { get; set; }
         public virtual ICollection<ApplicationUserRole> ApplicationUserRole { get; set; }
+        public string FullName() => $"{this.FirstName} {this.LastName}";
     }
 }

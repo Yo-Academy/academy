@@ -77,22 +77,22 @@ namespace Academy.Application.Academies.Command.Handlers
             }
 
             // Create entity object
-            Entities.Academies Academies = new Entities.Academies(id, request.Name, request.ShortName,
+            Entities.Academies Academy = new Entities.Academies(id, request.Name, request.ShortName,
                 request.GST, request.Address, request.City, request.Pincode, logoName, QRName,
                 request.ShortName.GetSubdomainFromShortName(), cnt++, PadLeft);
-
+            
             var result = new AcademyDetailsDto();
 
             //Create A new Tenant for academy
-            string tanentId = request.ShortName.GetSubdomainFromShortName();
+            string tenantId = request.ShortName.GetSubdomainFromShortName();
             CreateTenantRequest requestTenant = new CreateTenantRequest()
             {
-                Id = tanentId,
-                Name = tanentId,
-                AdminEmail = tanentId + DefaultDomain
+                Id = tenantId,
+                Name = tenantId,
+                AdminEmail = tenantId + DefaultDomain
             };
 
-            if (!await _tenantService.ExistsWithNameAsync(tanentId))
+            if (!await _tenantService.ExistsWithNameAsync(tenantId))
             {
                 var tenantInfo = await _tenantService.CreateAsync(requestTenant, cancellationToken);
                 result.Tenant = tenantInfo.Adapt<TenantDto>();
@@ -105,15 +105,16 @@ namespace Academy.Application.Academies.Command.Handlers
             //Inserts RequirementSet Record
             try
             {
-                Academies.Subdomain = tanentId;
+                Academy.Subdomain = tenantId;
 
-                Academies.AcademySportsMappings = new List<AcademySportsMapping>();
+                Academy.AcademySportsMappings = new List<AcademySportsMapping>();
                 foreach (var item in request.Sports)
                 {
-                    Academies.AcademySportsMappings.Add(new AcademySportsMapping(Guid.NewGuid(), Academies.Id, item));
+                    Academy.AcademySportsMappings.Add(new AcademySportsMapping(Guid.NewGuid(), Academy.Id, item));
                 }
-                
-                var responseAcademy = await _repository.AddAsync(Academies);
+
+                Academy.Subdomain = tenantId;
+                var responseAcademy = await _repository.AddAsync(Academy);
 
                 //if (academyList.Count > 0)
                 //{

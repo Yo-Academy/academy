@@ -38,18 +38,18 @@ public class AuditableEntityConfig<T> : IEntityTypeConfiguration<T> where T : Au
 			.HasColumnName("is_deleted")
 			.IsRequired();
 
-        // Define foreign key relationships with ApplicationUser
-        builder.HasOne<ApplicationUser>()
-            .WithMany() // Assuming no navigation property in ApplicationUser
-            .HasForeignKey(p => p.CreatedBy)
-            .HasConstraintName("FK_Entity_ApplicationUser_CreatedBy")
-            .OnDelete(DeleteBehavior.SetNull); // Set to null on user deletion
+        //// Define foreign key relationships with ApplicationUser
+        //builder.HasOne<ApplicationUser>()
+        //    .WithMany() // Assuming no navigation property in ApplicationUser
+        //    .HasForeignKey(p => p.CreatedBy)
+        //    .HasConstraintName("FK_Entity_ApplicationUser_CreatedBy")
+        //    .OnDelete(DeleteBehavior.SetNull); // Set to null on user deletion
 
-        builder.HasOne<ApplicationUser>()
-        .WithMany() // Assuming no navigation property in ApplicationUser
-        .HasForeignKey(p => p.LastModifiedBy)
-        .HasConstraintName("FK_Entity_ApplicationUser_LastModifiedBy")
-        .OnDelete(DeleteBehavior.SetNull); // Set to null on user deletion
+        //builder.HasOne<ApplicationUser>()
+        //.WithMany() // Assuming no navigation property in ApplicationUser
+        //.HasForeignKey(p => p.LastModifiedBy)
+        //.HasConstraintName("FK_Entity_ApplicationUser_LastModifiedBy")
+        //.OnDelete(DeleteBehavior.SetNull); // Set to null on user deletion
     }
 }
 

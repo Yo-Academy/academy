@@ -1,4 +1,5 @@
 ﻿using Academy.Application.Academies.Command.Models;
+using Academy.Application.Academies.Dto;
 using Academy.Application.Identity.Users;
 using Academy.Application.Multitenancy;
 using Academy.Infrastructure.Persistence;
@@ -16,19 +17,22 @@ namespace Academy.Infrastructure.Multitenancy
         private readonly IDatabaseInitializer _dbInitializer;
         private readonly DatabaseSettings _dbSettings;
         private readonly IConfiguration _config;
+        private readonly IServiceProvider _serviceProvider;
 
         public TenantService(
             IMultiTenantStore<TenantInfo> tenantStore,
             IConnectionStringSecurer csSecurer,
             IDatabaseInitializer dbInitializer,
             IOptions<DatabaseSettings> dbSettings,
-            IConfiguration config)
+            IConfiguration config,
+            IServiceProvider serviceProvider)
         {
             _tenantStore = tenantStore;
             _csSecurer = csSecurer;
             _dbInitializer = dbInitializer;
             _dbSettings = dbSettings.Value;
             _config = config;
+            _serviceProvider = serviceProvider;
         }
 
         public async Task<List<TenantDto>> GetAllAsync()
@@ -125,5 +129,39 @@ namespace Academy.Infrastructure.Multitenancy
         private async Task<TenantInfo> GetTenantInfoAsync(string id) =>
             await _tenantStore.TryGetAsync(id)
                 ?? throw new NotFoundException(string.Format(DbRes.T("TenantNotFoundMsg"), typeof(TenantInfo).Name, id));
+
+        public async Task<List<AcademyUsersDetailsDto>> GetUsersAsync(string tenantId, string role, CancellationToken cancellationToken)
+        {
+            var tenant = await _tenantStore.TryGetAsync(tenantId);
+
+            // TODO: run this in a hangfire job? will then have to send mail when it's ready or not
+            try
+            {
+                if (tenant != null)
+                {
+                    // First create a new scope
+                    using var scope = _serviceProvider.CreateScope();
+
+                    // Then set current tenant so the right connectionstring is used
+                    _serviceProvider.GetRequiredService<IMultiTenantContextAccessor>()
+                        .MultiTenantContext = new MultiTenantContext<TenantInfo>()
+                        {
+                            TenantInfo = tenant.Adapt<TenantInfo>()
+                        };
+
+                    // Then run the initialization in the new scope
+                    return await scope.ServiceProvider.GetRequiredService<IUserService>()
+                        .GetTenantUsersByRole(role, cancellationToken);
+                }
+                else
+                {
+                    return new List<AcademyUsersDetailsDto>();
+                }
+            }
+            catch
+            {
+                throw;
+            }
+        }
     }
 }

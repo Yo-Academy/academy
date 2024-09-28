@@ -14,5 +14,7 @@
         public string? Subdomain { get; set; }
         public bool IsActive { get; set; }
         public virtual ICollection<DefaultIdType> Sports { get; set; }
+        public virtual ICollection<AcademyUsersDetailsDto>  Owners { get; set; }
+        public virtual ICollection<AcademyUsersDetailsDto> Admins { get; set; }
     }
 }

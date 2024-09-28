@@ -1,4 +1,5 @@
 ﻿using Academy.Application.Academies.Command.Models;
+using Academy.Application.Academies.Dto;
 using Academy.Application.Identity.Users;
 
 namespace Academy.Application.Multitenancy
@@ -14,5 +15,6 @@ namespace Academy.Application.Multitenancy
         Task<TenantDto> DeactivateAsync(string id);
         Task<TenantDto> UpdateSubscription(string id, DateTime extendedExpiryDate);
         Task CreateWithUsersAsync(CreateAcademyUserRequest request, CancellationToken cancellationToken);
+        Task<List<AcademyUsersDetailsDto>> GetUsersAsync(string tenantId, string role, CancellationToken cancellationToken);
     }
 }
