@@ -1,6 +1,7 @@
 ﻿using Academy.Application.Batch.Dto;
 using Academy.Application.Batch.Query.Models;
 using Academy.Application.Batch.Specifications;
+using Academy.Application.Contracts.Persistence;
 using Academy.Application.Persistence.Repository;
 using Academy.Shared.Pagination;
 using Academy.Shared.Pagination.Models;
@@ -13,9 +14,11 @@ namespace Academy.Application.Batch.Query.Handlers
     public class GetBatchListRequestHandler : IRequestHandler<GetBatchListRequest, Result<PaginationResponse<BatchDto>>>
     {
         private readonly IReadRepository<Entity> _repository;
-        public GetBatchListRequestHandler(IReadRepository<Entity> repository)
+       // private readonly IBatchRepository _batchRepository;
+        public GetBatchListRequestHandler(IReadRepository<Entity> repository)//, IBatchRepository batchRepository)
         {
             _repository = repository;
+            //_batchRepository = batchRepository;
         }
         public async Task<Result<PaginationResponse<BatchDto>>> Handle(GetBatchListRequest request, CancellationToken cancellationToken)
         {

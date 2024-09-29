@@ -1,4 +1,4 @@
-﻿namespace Academy.Application.Coaching.Dto
+﻿namespace Academy.Application.Batch.Dto
 {
     public class CoachingDto
     {

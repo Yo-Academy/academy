@@ -4,6 +4,8 @@ using Academy.Application.Batch.Query.Models;
 
 namespace Academy.Api.Controllers.Batch
 {
+
+    [Authorize]
     public class BatchController : VersionedApiController
     {
         private readonly IMediator _mediator;
@@ -36,15 +38,15 @@ namespace Academy.Api.Controllers.Batch
         [HttpGet("{id}")]
         [OpenApiOperation("Gets batch details based on id", "")]
         public async Task<ActionResult> GetByIdAsync(Guid id)
-        {
+            {
             return Ok(await _mediator.Send(new GetBatchDetailsRequest { Id = id }));
         }
 
-        [HttpPut("{id}")]
+        [HttpPut]
         [OpenApiOperation("Updates Batch details.", "")]
-        public async Task<ActionResult> UpdateAsync(Guid id, UpdateBatchRequest updateBatchCommand)
+        public async Task<ActionResult> UpdateAsync(UpdateBatchRequest updateBatchCommand)
         {
-            updateBatchCommand.Id = id;
+            //updateBatchCommand.Id = id;
             return Ok(await _mediator.Send(updateBatchCommand));
         }
     }

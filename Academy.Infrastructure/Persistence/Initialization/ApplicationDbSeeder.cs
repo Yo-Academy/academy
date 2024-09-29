@@ -124,7 +124,7 @@ namespace Academy.Infrastructure.Persistence.Initialization
                     NormalizedEmail = _currentTenant.AdminEmail?.ToUpperInvariant(),
                     NormalizedUserName = adminUserName.ToUpperInvariant(),
                     IsActive = true,
-                    CountryCode = "91"
+                    CountryCode ="91"
                 };
 
                 _logger.LogInformation("Seeding Default Admin User for '{tenantId}' Tenant.", _currentTenant.Id);

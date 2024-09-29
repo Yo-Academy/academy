@@ -11,6 +11,7 @@
 
         [ForeignKey("SportsId")]
         public virtual Sports Sports { get; set; }
+        
 
         [ForeignKey("CoachingId")]
         public virtual Coaching Coaching { get; set; }

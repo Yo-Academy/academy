@@ -1,6 +1,6 @@
-﻿namespace Academy.Application.Coaching.Dto
+﻿namespace Academy.Application.Subscription.Dto
 {
-    public class CoachingDto
+    public class PlanTypeDto
     {
         public DefaultIdType Id { get; set; }
         public string Code { get; set; }

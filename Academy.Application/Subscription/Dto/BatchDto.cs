@@ -1,8 +1,4 @@
-﻿using Academy.Domain.Entities;
-using System.ComponentModel.DataAnnotations.Schema;
-using Entities = Academy.Domain.Entities;
-
-namespace Academy.Application.Batch.Dto
+﻿namespace Academy.Application.Subscription.Dto
 {
     public class BatchDto
     {
@@ -13,7 +9,5 @@ namespace Academy.Application.Batch.Dto
         public TimeOnly StartTime { get; set; }
         public TimeOnly EndTime { get; set; }
         public string Days { get; set; }
-        public CoachingDto Coaching { get; set; }
-        public SportsDto Sports { get; set; }
     }
 }
