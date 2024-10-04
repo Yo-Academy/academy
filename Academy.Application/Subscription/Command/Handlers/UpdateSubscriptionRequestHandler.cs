@@ -22,7 +22,7 @@ namespace Academy.Application.Subscription.Command.Handlers
             if (SubscriptionToUpdate == null)
                 return Result.Fail(new NotFoundException(DbRes.T("SubscriptionNotFound")));
 
-            SubscriptionToUpdate.Update(request.SportsId, request.BatchId, request.CoachingId, request.PlanTypeId, request.Fee);
+            SubscriptionToUpdate.Update(request.SportsId, request.BatchId, request.CoachingId, request.PlanTypeId, request.Fee, request.IsActive);
 
             await _repository.UpdateAsync(SubscriptionToUpdate, cancellationToken);
             return Result.Succeed(SubscriptionToUpdate.Adapt<SubscriptionDto>());

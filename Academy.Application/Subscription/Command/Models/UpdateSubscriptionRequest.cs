@@ -10,5 +10,6 @@ namespace Academy.Application.Subscription.Command.Models
         public DefaultIdType CoachingId { get; set; }
         public DefaultIdType PlanTypeId { get; set; }
         public int Fee { get; set; }
+        public bool IsActive { get; set; }
     }
 }

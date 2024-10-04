@@ -9,6 +9,8 @@
         public TimeOnly EndTime { get; set; }
         public string Days { get; set; }
 
+        public bool IsActive { get; set; }
+
         [ForeignKey("SportsId")]
         public virtual Sports Sports { get; set; }
         
@@ -20,7 +22,7 @@
             
         }
 
-        public Batch(DefaultIdType id, DefaultIdType sportsId, string batchName, DefaultIdType coachingId, TimeOnly startTime, TimeOnly endTime, string days)
+        public Batch(DefaultIdType id, DefaultIdType sportsId, string batchName, DefaultIdType coachingId, TimeOnly startTime, TimeOnly endTime, string days, bool isActive)
         {
             Id = id;
             SportsId = sportsId;
@@ -29,9 +31,10 @@
             StartTime = startTime;
             EndTime = endTime;
             Days = days;
+            IsActive = isActive;
         }
 
-        public Batch Update(DefaultIdType sportsId, string batchName, DefaultIdType coachingId, TimeOnly startTime, TimeOnly endTime, string days)
+        public Batch Update(DefaultIdType sportsId, string batchName, DefaultIdType coachingId, TimeOnly startTime, TimeOnly endTime, string days, bool isActive)
         {
             SportsId = sportsId;
             BatchName = batchName;
@@ -39,6 +42,7 @@
             StartTime = startTime;
             EndTime = endTime;
             Days = days;
+            IsActive = isActive;
             return this;
         }
     }

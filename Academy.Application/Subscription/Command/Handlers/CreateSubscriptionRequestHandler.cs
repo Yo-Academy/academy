@@ -18,7 +18,7 @@ namespace Academy.Application.Subscription.Command.Handlers
         public async Task<Result<SubscriptionDto>> Handle(CreateSubscriptionRequest request, CancellationToken cancellationToken)
         {
             var id = DefaultIdType.NewGuid();
-            Entities.Subscription Subscription = new Entities.Subscription(id, request.SportsId, request.BatchId, request.CoachingId, request.PlanTypeId, request.Fee);
+            Entities.Subscription Subscription = new Entities.Subscription(id, request.SportsId, request.BatchId, request.CoachingId, request.PlanTypeId, request.Fee, request.IsActive);
 
             //Inserts RequirementSet Record
             var responseSubscription = await _repository.AddAsync(Subscription);

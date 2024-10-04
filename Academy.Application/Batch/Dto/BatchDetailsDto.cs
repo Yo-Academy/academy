@@ -15,6 +15,8 @@ namespace Academy.Application.Batch.Dto
         public DefaultIdType CoachingId { get; set; }
         public TimeOnly StartTime { get; set; }
         public TimeOnly EndTime { get; set; }
+
+        public bool IsActive { get; set; }
         public string Days { get; set; }
         public Sports Sports { get; set; }
     }
