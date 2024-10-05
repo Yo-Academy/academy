@@ -3,6 +3,8 @@ using Academy.Application.Dashboard.Dto;
 using Academy.Application.Dashboard.Query.Models;
 using Academy.Application.Dashboard.Specifications;
 using Academy.Application.Persistence.Repository;
+using Academy.Shared;
+using static System.Net.WebRequestMethods;
 using Entity = Academy.Domain.Entities;
 
 namespace Academy.Application.Dashboard.Query.Handlers
@@ -38,7 +40,7 @@ namespace Academy.Application.Dashboard.Query.Handlers
                             ActiveAcademyPlayers = 0,
                             ActiveMembers = 2,
                             ActiveUsers = 3,
-                            Image = item.Sports.Image,
+                            Image = !string.IsNullOrEmpty(item.Sports.Image) ? string.Format(Constants.CloudFrontUrl, Constants.S3Directory.Sports, item.Sports.Image) : string.Empty, // Not able to generate cloud front url using mapping so as of not put static link for sports image.
                             Users = 2
                         });
                     }

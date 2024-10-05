@@ -1,4 +1,5 @@
 ﻿using Academy.Application.Academies.Dto;
+using Academy.Application.Dashboard.Dto;
 using Academy.Domain.Identity;
 using Academy.Shared;
 using Mapster;
@@ -24,6 +25,9 @@ namespace Academy.Application.Mapping
                 .Map(dest => dest.Logo, src => string.Format(Constants.CloudFrontUrl, Constants.S3Directory.Logo, src.Logo))
                 .Map(dest => dest.QRCode, src => string.Format(Constants.CloudFrontUrl, Constants.S3Directory.QR, src.QRCode))
                 .Map(dest => dest.Sports, src => src.AcademySportsMappings.Count > 0 ? src.AcademySportsMappings.Select(x => x.SportId).ToList() : new List<Guid>());
+
+            TypeAdapterConfig<Entites.Sports, DashboardDto>.NewConfig()
+                .Map(dest => dest.Image, src => string.Format(Constants.CloudFrontUrl, Constants.S3Directory.Sports, src.Image));
 
             TypeAdapterConfig<ApplicationUser, AcademyUsersDetailsDto>.NewConfig()
                 .Map(dest => dest.FullName, src => src.FullName());
