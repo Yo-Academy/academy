@@ -21,6 +21,7 @@ namespace Academy.Shared
         {
             public const string Logo = nameof(Logo);
             public const string QR = nameof(QR);
+            public const string Sports = nameof(Sports);
         }
 
         public class UserRole

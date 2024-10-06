@@ -1,4 +1,5 @@
 ﻿using Academy.Application.Sport.Dto;
+using Microsoft.AspNetCore.Http;
 using System.Text.Json.Serialization;
 
 namespace Academy.Application.Sport.Command.Models
@@ -8,7 +9,7 @@ namespace Academy.Application.Sport.Command.Models
         [JsonIgnore]
         public DefaultIdType Id { get; set; }
         public string Name { get; set; }
-        public string Image { get; set; }
+        public IFormFile? Image { get; set; } = default!;
         public bool IsActive { get; set; }
     }
 }
