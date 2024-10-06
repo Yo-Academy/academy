@@ -3,6 +3,7 @@ using System;
 using Academy.Infrastructure.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Academy.Migrators.PostgreSQL.Migrations.Application
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241005044747_add_UserInfoTable")]
+    partial class add_UserInfoTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -886,9 +889,8 @@ namespace Academy.Migrators.PostgreSQL.Migrations.Application
                     b.Property<Guid>("CoachingId")
                         .HasColumnType("uuid");
 
-                    b.Property<string>("ContactNo")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("ContactNo")
+                        .HasColumnType("integer");
 
                     b.Property<Guid>("CreatedBy")
                         .HasMaxLength(100)
@@ -955,9 +957,6 @@ namespace Academy.Migrators.PostgreSQL.Migrations.Application
                     b.Property<Guid>("SportsId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("SubscriptionId")
-                        .HasColumnType("uuid");
-
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("text");
@@ -975,8 +974,6 @@ namespace Academy.Migrators.PostgreSQL.Migrations.Application
                     b.HasIndex("PlanTypeId");
 
                     b.HasIndex("SportsId");
-
-                    b.HasIndex("SubscriptionId");
 
                     b.ToTable("UserInfo");
                 });
@@ -1496,12 +1493,6 @@ namespace Academy.Migrators.PostgreSQL.Migrations.Application
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Academy.Domain.Entities.Subscription", "Subscription")
-                        .WithMany()
-                        .HasForeignKey("SubscriptionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Batch");
 
                     b.Navigation("Coaching");
@@ -1509,8 +1500,6 @@ namespace Academy.Migrators.PostgreSQL.Migrations.Application
                     b.Navigation("PlanType");
 
                     b.Navigation("Sports");
-
-                    b.Navigation("Subscription");
                 });
 
             modelBuilder.Entity("Academy.Domain.Identity.ApplicationRoleClaim", b =>

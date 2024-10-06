@@ -1,16 +1,7 @@
-﻿using Academy.Application.Batch.Dto;
-using Academy.Application.Batch.Query.Models;
-using Academy.Application.Batch.Specifications;
-using Academy.Application.Persistence.Repository;
+﻿using Academy.Application.Persistence.Repository;
 using Academy.Application.Subscription.Dto;
 using Academy.Application.Subscription.Query.Models;
-using Academy.Application.Subscription.Specifications;
 using Mapster;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Entity = Academy.Domain.Entities;
 
 
