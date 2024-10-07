@@ -8,7 +8,7 @@
         public DefaultIdType CoachingId { get; set; }
         public DefaultIdType PlanTypeId { get; set; }
         public int Fee { get; set; }
-
+        public bool IsActive { get; set; }
         public CoachingDto Coaching { get; set; }
         public SportsDto Sports { get; set; }
         public PlanTypeDto PlanType { get; set; }

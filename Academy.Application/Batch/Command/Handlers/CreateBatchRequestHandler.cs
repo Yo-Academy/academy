@@ -19,7 +19,7 @@ namespace Academy.Application.Batch.Command.Handlers
         public async Task<Result<BatchDto>> Handle(CreateBatchRequest request, CancellationToken cancellationToken)
         {
             var id = DefaultIdType.NewGuid();
-            Entities.Batch Batch = new Entities.Batch(id, request.SportsId, request.BatchName, request.CoachingId, request.StartTime, request.EndTime, request.Days);
+            Entities.Batch Batch = new Entities.Batch(id, request.SportsId, request.BatchName, request.CoachingId, request.StartTime, request.EndTime, request.Days, request.IsActive);
 
             //Inserts RequirementSet Record
             var responseBatch = await _repository.AddAsync(Batch);

@@ -13,6 +13,7 @@ namespace Academy.Application.Batch.Dto
         public TimeOnly StartTime { get; set; }
         public TimeOnly EndTime { get; set; }
         public string Days { get; set; }
+        public bool IsActive { get; set; }
         public CoachingDto Coaching { get; set; }
         public SportsDto Sports { get; set; }
     }

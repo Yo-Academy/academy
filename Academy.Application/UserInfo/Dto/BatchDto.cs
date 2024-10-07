@@ -1,8 +1,6 @@
-﻿using Academy.Application.Batch.Dto;
-
-namespace Academy.Application.Batch.Command.Models
+﻿namespace Academy.Application.UserInfo.Dto
 {
-    public class UpdateBatchRequest : IRequest<Result<BatchDto>>
+    public class BatchDto
     {
         public DefaultIdType Id { get; set; }
         public DefaultIdType SportsId { get; set; }
@@ -11,6 +9,5 @@ namespace Academy.Application.Batch.Command.Models
         public TimeOnly StartTime { get; set; }
         public TimeOnly EndTime { get; set; }
         public string Days { get; set; }
-        public bool IsActive { get; set; }
     }
 }

@@ -20,7 +20,7 @@ namespace Academy.Api.Controllers.Subscription
         }
 
         [HttpPost]
-        [OpenApiOperation("Creates an subscription.", "")]
+        [OpenApiOperation("Creates a subscription.", "")]
         public async Task<ActionResult> CreateAsync(CreateSubscriptionRequest createBatchCommand)
         {
             return Ok(await _mediator.Send(createBatchCommand));

@@ -1,4 +1,4 @@
-﻿namespace Academy.Application.Subscription.Dto
+﻿namespace Academy.Application.UserInfo.Dto
 {
     public class CoachingDto
     {

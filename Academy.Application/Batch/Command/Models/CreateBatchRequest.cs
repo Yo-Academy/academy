@@ -11,5 +11,6 @@ namespace Academy.Application.Batch.Command.Models
         public TimeOnly StartTime { get; set; }
         public TimeOnly EndTime { get; set; }
         public string Days { get; set; }
+        public  bool  IsActive { get; set; }
     }
 }
