@@ -18,7 +18,7 @@ namespace Academy.Application.UserInfo.Command.Models
         public int PinCode { get; set; }
         public string ContactNo { get; set; }
         public string? ProfilePic { get; set; }
-        public bool IsACtive { get; set; }
+        public bool IsActive { get; set; }
         public DefaultIdType SportsId { get; set; }
         public DefaultIdType BatchId { get; set; }
         public DefaultIdType CoachingId { get; set; }

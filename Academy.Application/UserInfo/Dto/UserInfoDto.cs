@@ -16,18 +16,15 @@
         public int PinCode { get; set; }
         public string ContactNo { get; set; }
         public string? ProfilePic { get; set; }
-        public bool IsACtive { get; set; }
+        public bool IsActive { get; set; }
         public DefaultIdType SportsId { get; set; }
         public DefaultIdType BatchId { get; set; }
         public DefaultIdType CoachingId { get; set; }
-        public DefaultIdType PlanTypeId { get; set; }
         public DefaultIdType SubscriptionId { get; set; }
         public int EnrollmentFee { get; set; }
-
         public  SportsDto Sports { get; set; }
         public  BatchDto Batch { get; set; }
         public  CoachingDto Coaching { get; set; }
-        public PlanTypeDto PlanType { get; set; }
         public SubscriptionDto Subscription { get; set; }
     }
 }
