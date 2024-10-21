@@ -1,8 +1,11 @@
 using Academy.Application.Identity.Tokens;
 using Academy.Application.Identity.Users;
+using Academy.Application.Identity.Users.Command.Model;
 using Academy.Infrastructure.Auth;
 using Academy.Infrastructure.Auth.Jwt;
 using Academy.Infrastructure.Multitenancy;
+using Academy.Infrastructure.Persistence.Context;
+using Academy.Shared;
 using Academy.Shared.Authorization;
 using Academy.Shared.Multitenancy;
 using Finbuckle.MultiTenant.Strategies;
@@ -26,6 +29,7 @@ namespace Academy.Infrastructure.Identity
         private readonly TenantInfo? _currentTenant;
         private readonly IUserService _userService;
         private readonly IConfiguration _config;
+        private readonly ApplicationDbContext _db;
 
         public TokenService(
             UserManager<ApplicationUser> userManager,
@@ -33,7 +37,8 @@ namespace Academy.Infrastructure.Identity
             TenantInfo? currentTenant,
             IOptions<SecuritySettings> securitySettings,
             IUserService userService,
-            IConfiguration config)
+            IConfiguration config,
+            ApplicationDbContext db)
         {
             _userManager = userManager;
             _jwtSettings = jwtSettings.Value;
@@ -41,6 +46,7 @@ namespace Academy.Infrastructure.Identity
             _securitySettings = securitySettings.Value;
             _userService = userService;
             _config = config;
+            _db = db;
         }
 
         public async Task<TokenResponse> GetTokenAsync(TokenRequest request, string ipAddress, CancellationToken cancellationToken)
@@ -81,8 +87,7 @@ namespace Academy.Infrastructure.Identity
         public async Task<TokenResponse> GetLoginTokenAsync(LoginRequest request, string ipAddress, CancellationToken cancellationToken)
         {
             if (string.IsNullOrWhiteSpace(_currentTenant?.Id)
-                || await _userManager.Users.FirstOrDefaultAsync(x => x.PhoneNumber == request.PhoneNumber) is not { } user
-                || !await _userManager.CheckPasswordAsync(user, request.Password))
+                || await _userManager.Users.FirstOrDefaultAsync(x => x.PhoneNumber == request.PhoneNumber && x.OTP == request.Password) is not { } user)
             {
                 throw new UnauthorizedException(DbRes.T("AuthenticationFailedMsg"));
             }
@@ -110,6 +115,8 @@ namespace Academy.Infrastructure.Identity
                 }
             }
 
+            user.OTP = string.Empty;
+
             return await GenerateTokensAndUpdateUser(user, ipAddress);
         }
 
@@ -130,6 +137,28 @@ namespace Academy.Infrastructure.Identity
             }
 
             return await GenerateTokensAndUpdateUser(user, ipAddress);
+        }
+
+        public async Task<bool> GenerateOTP(UserLoginRequest request, CancellationToken cancellationToken)
+        {
+            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.PhoneNumber == request.PhoneNumber);
+            _ = user ?? throw new NotFoundException(DbRes.T("UserNotFoundMsg"));
+
+            Random random = new Random();
+            string otpString = random.Next(1000, 10000).ToString();
+
+            user.OTP = otpString;
+            await _userManager.UpdateAsync(user);
+
+            HttpClient _httpClient = new HttpClient();
+            string ApiUrl = "https://bhashsms.com/api/sendmsg.php";
+
+            var url = $"{ApiUrl}?user=coneysports&pass=Coney@2023&sender=BUZWAP&phone=8866299123&text=otp&priority=wa&stype=auth&Params=" + otpString;
+
+            var response = await _httpClient.GetAsync(url);
+            response.EnsureSuccessStatusCode();
+
+            return true;
         }
 
         private async Task<TokenResponse> GenerateTokensAndUpdateUser(ApplicationUser user, string ipAddress)
