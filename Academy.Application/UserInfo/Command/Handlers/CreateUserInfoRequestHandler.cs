@@ -23,8 +23,8 @@ namespace Academy.Application.UserInfo.Command.Handlers
             Entities.UserInfo UserInfo = new Entities.UserInfo(id, request.UserId, request.UserName, request.FatherName, request.Email, 
                                                                    request.DateOfJoin, request.DateOfBirth, request.Age, request.Address, request.Gender,
                                                                    request.City, request.PinCode, request.ContactNo, request.ProfilePic, request.SportsId,
-                                                                   request.BatchId, request.CoachingId, request.PlanTypeId, request.SubscriptionId, 
-                                                                   request.EnrollmentFee, request.IsACtive);
+                                                                   request.BatchId, request.CoachingId, request.SubscriptionId, 
+                                                                   request.EnrollmentFee, request.IsActive);
 
             //Inserts RequirementSet Record
             var responseUserInfo = await _repository.AddAsync(UserInfo);
