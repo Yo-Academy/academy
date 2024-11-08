@@ -24,8 +24,8 @@ namespace Academy.Application.UserInfo.Command.Handlers
             UserInfoToUpdate.Update(request.UserId, request.UserName, request.FatherName, request.Email,
                                                                    request.DateOfJoin, request.DateOfBirth, request.Age, request.Address, request.Gender,
                                                                    request.City, request.PinCode, request.ContactNo, request.ProfilePic, request.SportsId,
-                                                                   request.BatchId, request.CoachingId, request.PlanTypeId, request.SubscriptionId,
-                                                                   request.EnrollmentFee, request.IsACtive);
+                                                                   request.BatchId, request.CoachingId, request.SubscriptionId,
+                                                                   request.EnrollmentFee, request.IsActive);
 
             await _repository.UpdateAsync(UserInfoToUpdate, cancellationToken);
             return Result.Succeed(UserInfoToUpdate.Adapt<UserInfoDto>());

@@ -11,7 +11,6 @@ namespace Academy.Application.UserInfo.Specifications
                    .Include(x => x.Sports)
                    .Include(x => x.Coaching)
                    .Include(x => x.Batch)
-                   .Include(x => x.PlanType)
                    .Include(x => x.Subscription);
         }
     }

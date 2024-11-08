@@ -15,11 +15,11 @@
         public int PinCode { get; set; }
         public string ContactNo { get; set; }
         public string? ProfilePic { get; set; }
-        public bool IsACtive { get; set; }
+        public bool IsActive { get; set; }
         public DefaultIdType SportsId { get; set; }
         public DefaultIdType BatchId { get; set; }
         public DefaultIdType CoachingId { get; set; }
-        public DefaultIdType PlanTypeId { get; set; }
+        
 
         public DefaultIdType SubscriptionId { get; set; }
 
@@ -34,9 +34,6 @@
         [ForeignKey("CoachingId")]
         public virtual Coaching Coaching { get; set; }
 
-        [ForeignKey("PlanTypeId")]
-        public virtual PlanType PlanType { get; set; }
-
         [ForeignKey("SubscriptionId")]
         public virtual Subscription Subscription { get; set; }
         public UserInfo()
@@ -44,7 +41,7 @@
 
         }
 
-        public UserInfo(DefaultIdType id, string userId, string userName, string? fatherName, string? email, DateOnly dateOfJoin, DateOnly dateOfBirth, int? age, string address, string gender, string city, int pinCode, string contactNo, string? profilePic, DefaultIdType sportsId, DefaultIdType batchId, DefaultIdType coachingId, DefaultIdType planTypeId, DefaultIdType subscriptionId, int enrollmentFee, bool isACtive)
+        public UserInfo(DefaultIdType id, string userId, string userName, string? fatherName, string? email, DateOnly dateOfJoin, DateOnly dateOfBirth, int? age, string address, string gender, string city, int pinCode, string contactNo, string? profilePic, DefaultIdType sportsId, DefaultIdType batchId, DefaultIdType coachingId, DefaultIdType subscriptionId, int enrollmentFee, bool isActive)
         {
             Id = id;
             UserId = userId;
@@ -63,13 +60,12 @@
             SportsId = sportsId;
             BatchId = batchId;
             CoachingId = coachingId;
-            PlanTypeId = planTypeId;
             SubscriptionId = subscriptionId;
             EnrollmentFee = enrollmentFee;
-            IsACtive = isACtive;
+            IsActive = isActive;
         }
 
-        public UserInfo Update(string userId, string userName, string? fatherName, string? email, DateOnly dateOfJoin, DateOnly dateOfBirth, int? age, string address, string gender, string city, int pinCode, string contactNo, string? profilePic, DefaultIdType sportsId, DefaultIdType batchId, DefaultIdType coachingId, DefaultIdType planTypeId,DefaultIdType subscriptionId, int enrollmentFee, bool isACtive)
+        public UserInfo Update(string userId, string userName, string? fatherName, string? email, DateOnly dateOfJoin, DateOnly dateOfBirth, int? age, string address, string gender, string city, int pinCode, string contactNo, string? profilePic, DefaultIdType sportsId, DefaultIdType batchId, DefaultIdType coachingId, DefaultIdType subscriptionId, int enrollmentFee, bool isActive)
         {
             UserId = userId;
             UserName = userName;
@@ -87,10 +83,9 @@
             SportsId = sportsId;
             BatchId = batchId;
             CoachingId = coachingId;
-            PlanTypeId = planTypeId;
             SubscriptionId = subscriptionId;
             EnrollmentFee = enrollmentFee;
-            IsACtive = isACtive;
+            IsActive = isActive;
             return this;
         }
     }

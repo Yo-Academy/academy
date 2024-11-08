@@ -39,9 +39,6 @@ namespace Academy.Application.UserInfo.Command.Validators
             RuleFor(p => p.BatchId)
              .NotEmpty();
 
-            RuleFor(p => p.PlanTypeId)
-             .NotEmpty();
-
             RuleFor(p => p.CoachingId)
              .NotEmpty();
 
