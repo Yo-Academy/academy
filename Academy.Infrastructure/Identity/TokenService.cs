@@ -144,12 +144,14 @@ namespace Academy.Infrastructure.Identity
             var user = await _userManager.Users.FirstOrDefaultAsync(x => x.PhoneNumber == request.PhoneNumber);
             _ = user ?? throw new NotFoundException(DbRes.T("UserNotFoundMsg"));
 
+            //Start :: Below code is temporary, need to remove.
             if (user.PhoneNumber == "8866299123" || user.PhoneNumber == "9409005156" || user.PhoneNumber == "9601683956" || user.PhoneNumber == "9537299304")
             {
                 user.OTP = "1234";
                 await _userManager.UpdateAsync(user);
                 return true;
             }
+            //End
 
             Random random = new Random();
             string otpString = random.Next(1000, 10000).ToString();
@@ -160,7 +162,7 @@ namespace Academy.Infrastructure.Identity
             HttpClient _httpClient = new HttpClient();
             string ApiUrl = "https://bhashsms.com/api/sendmsg.php";
 
-            var url = $"{ApiUrl}?user=coneysports&pass=Coney@2023&sender=BUZWAP&phone=8866299123&text=otp&priority=wa&stype=auth&Params=" + otpString;
+            var url = $"{ApiUrl}?user=coneysports&pass=Coney@2023&sender=BUZWAP&phone=" + user.PhoneNumber + "&text=otp&priority=wa&stype=auth&Params=" + otpString;
 
             var response = await _httpClient.GetAsync(url);
             response.EnsureSuccessStatusCode();
