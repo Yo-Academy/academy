@@ -1,4 +1,8 @@
 using Academy.Application.Identity.Tokens;
+using Academy.Application.Identity.Users;
+using Academy.Application.Identity.Users.Command.Model;
+using Elasticsearch.Net;
+using YamlDotNet.Core.Tokens;
 
 namespace Academy.API.Controllers.Identity
 {
@@ -35,6 +39,16 @@ namespace Academy.API.Controllers.Identity
         {
             return _tokenService.RefreshTokenAsync(request, GetIpAddress()!);
         }
+
+        [HttpPost("get-otp")]
+        [AllowAnonymous]
+        [TenantIdHeader]
+        [OpenApiOperation("Request an one time password.", "")]
+        public async Task<ActionResult> GetOTP(UserLoginRequest request, CancellationToken cancellationToken)
+        {
+            return Ok(Result.Succeed(await _tokenService.GenerateOTP(request, cancellationToken)));
+        }
+
 
         private string? GetIpAddress() =>
             Request.Headers.ContainsKey("X-Forwarded-For")
