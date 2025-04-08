@@ -3,6 +3,7 @@ using System;
 using Academy.Infrastructure.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Academy.Migrators.PostgreSQL.Migrations.Application
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241108122444_add_PaymentType")]
+    partial class add_PaymentType
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1027,86 +1030,6 @@ namespace Academy.Migrators.PostgreSQL.Migrations.Application
                     b.ToTable("UserInfo");
                 });
 
-            modelBuilder.Entity("Academy.Domain.Entities.UserPaymentInfo", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
-                        .HasColumnName("id");
-
-                    b.Property<Guid>("CreatedBy")
-                        .HasMaxLength(100)
-                        .HasColumnType("uuid")
-                        .HasColumnName("created_by");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("created_on");
-
-                    b.Property<Guid?>("DeletedBy")
-                        .HasMaxLength(100)
-                        .HasColumnType("uuid")
-                        .HasColumnName("deleted_by");
-
-                    b.Property<DateTime?>("DeletedOn")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("deleted_on");
-
-                    b.Property<double>("Fee")
-                        .HasColumnType("double precision");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean")
-                        .HasColumnName("is_deleted");
-
-                    b.Property<Guid>("LastModifiedBy")
-                        .HasMaxLength(100)
-                        .HasColumnType("uuid")
-                        .HasColumnName("last_modified_by");
-
-                    b.Property<DateTime?>("LastModifiedOn")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("last_modified_on");
-
-                    b.Property<DateOnly>("PaymentDate")
-                        .HasColumnType("date");
-
-                    b.Property<string>("PaymentImage")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<Guid>("PaymentTypeId")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateOnly>("ReceiptDate")
-                        .HasColumnType("date");
-
-                    b.Property<string>("ReceiptNumber")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Remark")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateOnly>("SubscriptionEndDate")
-                        .HasColumnType("date");
-
-                    b.Property<DateOnly>("SubscriptionStartDate")
-                        .HasColumnType("date");
-
-                    b.Property<Guid>("UserInfoId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PaymentTypeId");
-
-                    b.HasIndex("UserInfoId");
-
-                    b.ToTable("UserPaymentInfo");
-                });
-
             modelBuilder.Entity("Academy.Domain.Identity.ApplicationRole", b =>
                 {
                     b.Property<Guid>("Id")
@@ -1629,25 +1552,6 @@ namespace Academy.Migrators.PostgreSQL.Migrations.Application
                     b.Navigation("Sports");
 
                     b.Navigation("Subscription");
-                });
-
-            modelBuilder.Entity("Academy.Domain.Entities.UserPaymentInfo", b =>
-                {
-                    b.HasOne("Academy.Domain.Entities.PaymentType", "PaymentType")
-                        .WithMany()
-                        .HasForeignKey("PaymentTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Academy.Domain.Entities.UserInfo", "UserInfo")
-                        .WithMany()
-                        .HasForeignKey("UserInfoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("PaymentType");
-
-                    b.Navigation("UserInfo");
                 });
 
             modelBuilder.Entity("Academy.Domain.Identity.ApplicationRoleClaim", b =>

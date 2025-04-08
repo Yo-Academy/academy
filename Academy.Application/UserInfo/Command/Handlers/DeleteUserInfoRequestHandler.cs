@@ -20,7 +20,7 @@ namespace Academy.Application.UserInfo.Command.Handlers
             var UserInfoToDelete = await _repository.GetByIdAsync(request.Id, cancellationToken);
 
             if (UserInfoToDelete == null)
-                return Result.Fail(new NotFoundException("Common Lookup Not Found"));
+                return Result.Fail(new NotFoundException(DbRes.T("UserInfoNotFound")));
 
             await _repository.DeleteAsync(UserInfoToDelete, cancellationToken);
             return Result.Succeed(UserInfoToDelete.Adapt<UserInfoDto>());
